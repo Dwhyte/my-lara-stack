@@ -2,6 +2,12 @@
 
 A production-ready **Laravel** + **Inertia.js** + **Vue** starter kit: **Tailwind CSS v4**, **Vuetify**, **Iconify**, **Wayfinder**, **Fortify** auth, shared **design tokens**, **AI-assisted development** via **Laravel Boost** and **MCP**, and local dev on **[Laravel Herd](https://herd.laravel.com/)**—no Docker required.
 
+## Using this as a template
+
+1. **Publish on GitHub** — In the repository **Settings → General**, enable **Template repository**. Others can use **Use this template** → **Create a new repository** to start a fresh project without fork history ([GitHub docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)).
+2. **After generating a new repo** — Follow [Development (Herd)](#development-herd) below: install dependencies, copy `.env`, migrate, and regenerate Wayfinder. Generated paths (`resources/js/actions`, `resources/js/routes`, `resources/js/wayfinder`) are **not** committed; run `php artisan wayfinder:generate` after clone (or `pnpm dev` / `pnpm build`, which run the generator via Vite).
+3. **Rename for your product** — Set `APP_NAME` in `.env`, adjust `config/app.php` / `composer.json` name if you like, and point [Herd](https://herd.laravel.com/) (or your host) at the new site URL.
+
 ## What’s included
 
 | Feature | Details |
@@ -46,7 +52,7 @@ When you add new AI-specific config, prefer **documenting the workflow** in `AGE
 
 ## Development (Herd)
 
-1. Clone the repository and enter the project directory.
+1. Clone **your** copy of the repository (`git clone …`) and enter the project directory.
 2. Install PHP dependencies: `composer install`
 3. Copy environment file: `cp .env.example .env` — then `php artisan key:generate`
 4. Create the app database (SQLite or MySQL/Postgres) and run `php artisan migrate`
@@ -120,6 +126,7 @@ After changing routes or controller method signatures, run `php artisan wayfinde
 
 ## Learn more
 
+- [Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) (GitHub)
 - [Laravel](https://laravel.com/docs)
 - [Laravel Boost](https://github.com/laravel/boost)
 - [Inertia.js](https://inertiajs.com/)

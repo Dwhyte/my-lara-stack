@@ -1,0 +1,26 @@
+---
+description: Prefer descriptive local variable names; avoid single-letter identifiers in app code
+globs: "**/*.{ts,vue,js,tsx,jsx,php}"
+alwaysApply: true
+---
+
+# Identifiers and local names
+
+Single-letter names (`d`, `p`, `t`, `a`, `b`, `l`, `i`, `e`) make code harder to read and review. Prefer **short, explicit names** that state role or domain.
+
+## Do
+
+- Name values after what they hold: `trendDelta`, `trendPeriod`, `targetScore`, `layerA` / `layerB` in comparators, `layer` in filters.
+- Use `index` (not `i`) in `forEach` / `map` when the index is used for logic or keys.
+- Keep industry-standard abbreviations where everyone reads them the same way: `id`, `url`, `err`, `ctx` (only when conventional in that stack).
+
+## Avoid
+
+- One-letter locals except in extremely small scopes (e.g. a single-line arrow that stays obvious — still prefer a word when editing existing code).
+- Cryptic shortenings: `n`, `x`, `o`, `h` for domain data.
+
+## Comparators
+
+Sort callbacks should use paired names: `layerA`/`layerB`, `left`/`right`, or `first`/`second` — not `a`/`b`.
+
+When touching a file, align new or nearby code with this rule; do not rename unrelated symbols in the same PR unless asked.

@@ -1,0 +1,186 @@
+@layer vuetify-overrides {
+  .v-application {
+    font-family: var(--font-dm-sans), sans-serif;
+    line-height: var(--app-line-height);
+  }
+
+  /* Signed-in app: dense 13px base + brainer-pro-v2-style radii (not theme colors) */
+  .v-application:not(.onboarding-app) {
+    font-size: var(--app-text-body);
+  }
+
+  .v-application:not(.onboarding-app) .v-card,
+  .v-application:not(.onboarding-app) .v-sheet.v-card {
+    border-radius: var(--app-radius);
+  }
+
+  .v-application:not(.onboarding-app) .v-btn {
+    border-radius: var(--app-radius-sm);
+  }
+
+  .v-application:not(.onboarding-app) .v-field--variant-outlined .v-field_outline {
+    border-radius: var(--app-radius-sm);
+  }
+
+  .onboarding-app .v-card,
+  .onboarding-app .v-sheet.v-card {
+    border-radius: var(--app-radius);
+  }
+
+  /* Onboarding: larger comfortable scale (Linear-style); radii stay friendly, not ultra-dense */
+  .onboarding-app.v-application {
+    font-size: var(--onboarding-text-body);
+    line-height: var(--app-line-height);
+  }
+
+  .onboarding-app .v-btn {
+    font-size: 15px;
+    min-height: 40px;
+    padding: 8px 18px;
+    border-radius: var(--app-radius-sm);
+  }
+
+  .onboarding-app .v-btn--size-small {
+    font-size: 13px;
+    min-height: 34px;
+    padding: 6px 14px;
+  }
+
+  .onboarding-app .v-field-label {
+    font-size: 14px;
+  }
+
+  .onboarding-app .v-list-item-title {
+    font-size: 15px;
+  }
+  .v-field__input {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: 16px;
+    line-height: var(--app-line-height);
+  }
+
+  .v-field-label {
+    font-size: var(--app-text-label);
+    line-height: var(--app-line-height);
+  }
+
+  .v-list-item-title {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--app-text-body);
+    line-height: var(--app-line-height);
+  }
+
+  .v-list-item-subtitle {
+    font-size: var(--app-text-label);
+    line-height: var(--app-line-height);
+  }
+
+  .v-tab {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--app-text-body);
+    font-weight: 500;
+    text-transform: none;
+  }
+
+  .v-btn {
+    font-family: var(--font-dm-sans), sans-serif;
+    text-transform: none;
+    padding: 6px 12px;
+    min-height: 32px;
+    font-weight: normal;
+  }
+
+  .v-btn--size-small {
+    font-size: 11px;
+    padding: 4px 10px;
+    min-height: 28px;
+  }
+
+  .v-card-title {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .v-card-subtitle {
+    font-size: var(--app-text-body);
+    line-height: var(--app-line-height);
+  }
+
+  .v-card-text {
+    font-size: var(--app-text-label);
+    line-height: var(--app-line-height);
+  }
+
+  .v-data-table {
+    font-size: var(--app-text-body);
+  }
+
+  .v-data-table th {
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: var(--app-text-label);
+    font-weight: 600;
+  }
+
+  .v-data-table td {
+    font-size: var(--app-text-body);
+  }
+
+  .v-dialog .v-card-title {
+    font-size: 18px;
+  }
+
+  .v-menu .v-list-item {
+    font-size: var(--app-text-body);
+    min-height: 36px;
+  }
+
+  .brand-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .brand-gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-primary-gradient {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white;
+  }
+
+  .btn-primary-gradient .v-btn__content,
+  .btn-primary-gradient.v-btn--disabled,
+  .btn-primary-gradient.v-btn--disabled .v-btn__content {
+    color: white;
+  }
+
+  .btn-primary-gradient.v-btn--disabled {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    opacity: 0.7;
+  }
+
+  .btn-primary-gradient:hover {
+    background: linear-gradient(to right, #5a6fd6, #6a4190);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+
+  .v-field--variant-outlined .v-field__input:focus,
+  .v-field--variant-outlined .v-field__input:focus-visible {
+    outline: none;
+  }
+
+  .v-field--variant-outlined.v-field--focused .v-field_outline {
+    border: 2px solid transparent;
+    background:
+      linear-gradient(white, white) padding-box,
+      var(--v-theme-primary-gradient) border-box;
+  }
+}
+
+:root {
+  --v-theme-primary-gradient: linear-gradient(to right, rgb(var(--v-theme-primary)), rgb(var(--v-theme-secondary)));
+}

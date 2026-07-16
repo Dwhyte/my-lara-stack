@@ -42,7 +42,8 @@ This project has domain-specific skills available in `.cursor/skills/` and `.age
 - `pest-testing` — Use when writing, editing, fixing, or refactoring Pest tests.
 - `inertia-react-development` — Use when creating React pages, forms, or navigation with Inertia.
 - `tailwindcss-development` — Use when adding or fixing Tailwind CSS utility classes in JSX/TSX.
-- `shadcn` skill — Use when installing, composing, or customizing shadcn/ui components.
+- `app-ui` — Use when building or styling React UI: tokens, spacing, typography, icons, matching designs. Project-specific layer on top of shadcn.
+- `shadcn` skill — Use when installing, composing, or customizing shadcn/ui components (generic library rules in `.agents/skills/shadcn/`).
 
 === .ai/react-shadcn-navigation rules ===
 
@@ -74,7 +75,7 @@ Pages live in `resources/js/pages/*.tsx`. Assign layouts per page via `Page.layo
 
 ## Theming
 
-Dark mode toggles the `.dark` class on `<html>` via `useAppearance` in `resources/js/hooks/use-appearance.ts`. shadcn CSS variables in `resources/css/app.css` drive light/dark surfaces.
+Dark mode toggles the `.dark` class on `<html>` via `useAppearance` in `resources/js/hooks/use-appearance.ts`. shadcn CSS variables in `resources/css/app.css` drive light/dark surfaces. Brand intent and token guidance: `.ai/design/brand.md` and the **`app-ui` skill**.
 
 ## State management: Zustand vs Inertia props
 

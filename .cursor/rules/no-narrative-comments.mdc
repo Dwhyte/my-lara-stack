@@ -1,0 +1,31 @@
+---
+description: No narrative file headers, docblocks, or "what this does" comments
+globs: "**/*.{ts,tsx,js,jsx,vue,php,mjs,cjs}"
+alwaysApply: true
+---
+
+# No narrative comments
+
+Code should be self-explanatory. Do **not** add comments, docblocks, or file headers that narrate what the code does, where it sits in the architecture, or how it relates to other files. Put that context in `README.md`, `AGENTS.md`, or the relevant skill — not in source.
+
+This applies to **every** file type: `.tsx`, `.ts`, `.vue`, `.php`, etc.
+
+## Forbidden — delete these on sight
+
+- "This component/store/hook does X" file-header docblocks.
+- Architecture narration that re-explains other files ("renders inside AppLayout via the resolver in app.tsx…").
+- `// Import the module` / `// Define the function` / `// Return the result` / `// Handle the error`.
+- "Future work can land here" / "Keep this minimal for now" aspirational notes.
+- PHPDoc / JSDoc on functions whose name + signature + types already say it: `/** Get the user. */ function getUser(): User`.
+- Block comments that paraphrase the next few lines of code.
+- DevTools / workflow instructions in source files (document in `README.md` instead).
+
+## Allowed — write these only when needed
+
+- A **single line** explaining a non-obvious trade-off, constraint, workaround, or "why this looks weird".
+- `@param` / `@return` PHPDoc **only** when the type isn't expressible in a native type hint (array shapes, generics).
+- A `TODO:` / `FIXME:` with a concrete action and ideally an issue/ticket reference.
+
+## When in doubt
+
+Delete the comment. Commit messages and PR descriptions are the right place for narrative context — not the file.

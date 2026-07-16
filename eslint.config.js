@@ -1,8 +1,11 @@
+import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
-import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
 import prettier from 'eslint-config-prettier/flat';
 import importPlugin from 'eslint-plugin-import';
-import vue from 'eslint-plugin-vue';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import tseslint from 'typescript-eslint';
 
 const controlStatements = [
     'if',
@@ -21,14 +24,21 @@ const paddingAroundControl = [
     ]),
 ];
 
-export default defineConfigWithVueTs(
-    vue.configs['flat/essential'],
-    vueTsConfigs.recommended,
+export default tseslint.config(
+    js.configs.recommended,
+    ...tseslint.configs.recommended,
+    react.configs.flat.recommended,
+    react.configs.flat['jsx-runtime'],
+    reactHooks.configs.flat.recommended,
+    jsxA11y.flatConfigs.recommended,
     {
         plugins: {
             import: importPlugin,
         },
         settings: {
+            react: {
+                version: 'detect',
+            },
             'import/resolver': {
                 typescript: {
                     alwaysTryTypes: true,
@@ -38,7 +48,8 @@ export default defineConfigWithVueTs(
             },
         },
         rules: {
-            'vue/multi-word-component-names': 'off',
+            'react/prop-types': 'off',
+            'react/react-in-jsx-scope': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/consistent-type-imports': [
                 'error',
@@ -81,7 +92,6 @@ export default defineConfigWithVueTs(
             'node_modules',
             'public',
             'bootstrap/ssr',
-            'tailwind.config.js',
             'vite.config.ts',
             'resources/js/actions/**',
             'resources/js/components/ui/*',
@@ -89,7 +99,7 @@ export default defineConfigWithVueTs(
             'resources/js/wayfinder/**',
         ],
     },
-    prettier, // Turn off all rules that might conflict with Prettier
+    prettier,
     {
         plugins: {
             '@stylistic': stylistic,

@@ -1,300 +1,132 @@
-@import 'tailwindcss/theme.css' layer(tailwind.theme);
-@import 'tailwindcss/utilities.css' layer(tailwind.utilities);
+@import 'tailwindcss';
 @import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/inter';
 
-@config '../../tailwind.config.ts';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.{blade.php,js,jsx,tsx}';
 
-@custom-variant light (&:where(.v-theme--light, .v-theme--light *));
-@custom-variant dark (&:where(.v-theme--dark, .v-theme--dark *));
+@custom-variant dark (&:is(.dark *));
 
-@theme {
-  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Poppins', ui-sans-serif, system-ui, sans-serif;
-
-  /*
-   * Semantic colors: mirror `resources/js/theme/tokens.ts` keys.
-   * Vuetify emits `--v-theme-{name}`; Tailwind utilities use `--color-{name}`.
-   */
-  --color-background: rgb(var(--v-theme-background));
-  --color-surface: rgb(var(--v-theme-surface));
-  --color-primary: rgb(var(--v-theme-primary));
-  --color-secondary: rgb(var(--v-theme-secondary));
-  --color-accent: rgb(var(--v-theme-accent));
-  --color-error: rgb(var(--v-theme-error));
-  --color-info: rgb(var(--v-theme-info));
-  --color-success: rgb(var(--v-theme-success));
-  --color-warning: rgb(var(--v-theme-warning));
-
-  --color-brand-primary: rgb(var(--v-theme-primary));
-  --color-brand-secondary: rgb(var(--v-theme-secondary));
-  --color-brand-gradient: linear-gradient(
-    to right,
-    var(--color-brand-primary),
-    var(--color-brand-secondary)
-  );
-
-  --breakpoint-*: initial;
-  --breakpoint-xs: 0px;
-  --breakpoint-sm: 600px;
-  --breakpoint-md: 840px;
-  --breakpoint-lg: 1145px;
-  --breakpoint-xl: 1545px;
-  --breakpoint-xxl: 2138px;
-
-  /* App shell geometry (aligned with brainerTurbo main.css + brainer-pro-v2) */
-  --radius-sm: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 24px;
-}
-
-@utility rounded-0 {
-  border-radius: 0;
-}
-@utility rounded-pill {
-  border-radius: 9999px;
-}
-@utility rounded-shaped {
-  border-radius: 24px 0;
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Inter Variable', sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 :root {
-  /** Primary UI sans (legacy var name retained for Vuetify / call sites) */
-  --font-poppins: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-dm-sans: var(--font-poppins);
-  --font-lora: var(--font-poppins);
-  /** Legacy names — map to v2 stacks so existing `var(--font-inter)` call sites stay valid */
-  --font-inter: var(--font-poppins);
-
-  /**
-   * App shell — Documentation/brainer-pro-v2.html structure + Brainer purple palette (#667eea / #764ba2).
-   */
-  /* Aligned with OnboardingLayout (gray-50 / cool neutrals) for a cohesive “onboarding” feel */
-  --app-shell-bg: #f9fafb;
-  --app-shell-surface: #ffffff;
-  --app-shell-surface-2: #f3f4f6;
-  --app-shell-border: #e5e7eb;
-  --app-shell-border-strong: #d1d5db;
-  --app-shell-text: #111827;
-  --app-shell-text-muted: #6b7280;
-  --app-shell-text-dim: #9ca3af;
-  --app-shell-primary: rgb(var(--v-theme-primary));
-  --app-shell-primary-deep: rgb(var(--v-theme-secondary));
-  --app-shell-primary-soft: color-mix(in srgb, rgb(var(--v-theme-primary)) 12%, transparent);
-  --app-shell-primary-soft-strong: color-mix(in srgb, rgb(var(--v-theme-primary)) 18%, transparent);
-  --app-shell-primary-border: color-mix(in srgb, rgb(var(--v-theme-primary)) 35%, transparent);
-  --app-shell-success: #10b981;
-  --app-shell-success-soft: rgb(16 185 129 / 0.12);
-
-  --app-shell-font-ui: 13px;
-  --app-shell-font-ui-sm: 12.5px;
-  --app-shell-font-ui-xs: 11px;
-  --app-shell-font-label: 10px;
-  --app-shell-leading: 1.55;
-  --app-shell-radius: 12px;
-  --app-shell-radius-sm: 8px;
-  --app-shell-radius-nav: 9999px;
-  --app-shell-topbar-h: 54px;
-  --app-shell-sidebar-w: 210px;
-  --app-shell-sidebar-pad-x: 10px;
-  --app-shell-sidebar-pad-y: 16px;
-  --app-shell-nav-item-py: 7px;
-  --app-shell-nav-item-px: 10px;
-  --app-shell-main-pad-x: 32px;
-  --app-shell-main-pad-y: 28px;
-  --app-shell-logo-mark-r: 7px;
-
-  --app-text-body: 13px;
-  --app-text-label: 12px;
-  --app-line-height: 1.55;
-  --app-radius: var(--app-shell-radius);
-  --app-radius-sm: var(--app-shell-radius-sm);
-  --onboarding-text-body: 15px;
+    --radius: 0.625rem;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* Restore pointer cursor on interactive elements (Tailwind v4 Preflight removed it from buttons) */
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+}
+
 @layer base {
-  button:not(:disabled),
-  [role='button']:not(:disabled) {
-    cursor: pointer;
-  }
-  a[href] {
-    cursor: pointer;
-  }
-}
+    * {
+        @apply border-border outline-ring/50;
+    }
 
-@layer utilities {
-  .text-brand-gradient {
-    background-image: var(--color-brand-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .border-brand-gradient {
-    background:
-      linear-gradient(white, white) padding-box,
-      linear-gradient(to right, var(--color-brand-primary), var(--color-brand-secondary)) border-box;
-    border: 2px solid transparent;
-  }
-
-  .animate-bounce-slow {
-    animation: bounce 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  /* App shell utilities — pair with AppLayout.vue */
-  .app-shell-page-bg {
-    background-color: var(--app-shell-bg);
-  }
-
-  .app-shell-topbar {
-    height: var(--app-shell-topbar-h);
-    min-height: var(--app-shell-topbar-h);
-    background-color: var(--app-shell-surface);
-    border-bottom: 1px solid var(--app-shell-border);
-    font-size: var(--app-shell-font-ui);
-  }
-
-  .app-shell-sidebar {
-    width: var(--app-shell-sidebar-w) !important;
-    min-width: var(--app-shell-sidebar-w);
-    background-color: var(--app-shell-surface) !important;
-    border-right: 1px solid var(--app-shell-border) !important;
-    padding: var(--app-shell-sidebar-pad-y) var(--app-shell-sidebar-pad-x);
-    font-size: var(--app-shell-font-ui);
-  }
-
-  /** Dark primary rail (brainerTurbo DefaultLayout) — overrides light `.app-shell-sidebar` surface */
-  .app-shell-sidebar.app-shell-sidebar--dark {
-    background-color: #111827 !important;
-    border-right: 1px solid rgb(255 255 255 / 0.08) !important;
-  }
-
-  .app-shell-sidebar.app-shell-sidebar--dark .app-shell-group-label {
-    color: rgb(255 255 255 / 0.45);
-  }
-
-  .app-shell-main {
-    background-color: var(--app-shell-bg);
-    padding: var(--app-shell-main-pad-y) var(--app-shell-main-pad-x);
-  }
-
-  .app-shell-nav-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: var(--app-shell-nav-item-py) var(--app-shell-nav-item-px);
-    /* border-radius: var(--app-shell-radius-nav); */
-    color: var(--app-shell-text-muted);
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: var(--app-shell-leading);
-    transition:
-      background-color 0.1s ease,
-      color 0.1s ease;
-  }
-
-  .app-shell-nav-link:hover {
-    background-color: var(--app-shell-surface-2);
-    color: var(--app-shell-text);
-  }
-
-  .app-shell-nav-link--active {
-    background-color: var(--app-shell-primary-soft);
-    color: var(--app-shell-primary);
-    font-weight: 600;
-  }
-
-  .app-shell-group-label {
-    font-size: var(--app-shell-font-label);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--app-shell-text-dim);
-    padding: 0 var(--app-shell-nav-item-px) 6px;
-  }
-
-  .app-shell-topnav-link {
-    padding: 6px 14px;
-    border-radius: var(--app-shell-radius-nav);
-    font-size: var(--app-shell-font-ui);
-    color: var(--app-shell-text-muted);
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    transition:
-      background-color 0.12s ease,
-      color 0.12s ease;
-  }
-
-  .app-shell-topnav-link:hover {
-    background-color: var(--app-shell-surface-2);
-    color: var(--app-shell-text);
-  }
-
-  .app-shell-topnav-link--active {
-    background-color: var(--app-shell-primary-soft);
-    color: var(--app-shell-primary);
-    font-weight: 600;
-  }
-
-  /** Logo mark — Poppins only */
-  .app-shell-logo-mark {
-    font-family: var(--font-poppins), sans-serif;
-  }
-
-  /** Main content headings */
-  .app-shell-main :where(h1) {
-    font-family: var(--font-dm-sans), sans-serif;
-  }
-}
-
-body {
-  font-family: var(--font-dm-sans), sans-serif;
-  font-size: var(--app-text-body);
-  line-height: var(--app-line-height);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Typography — Poppins via body + Vuetify */
-h1 {
-  @apply font-semibold my-0;
-  /* font-family: var(--font-lora), serif; */
-}
-
-h2 {
-  @apply font-semibold my-0;
-  /* font-family: var(--font-lora), serif; */
-}
-
-h3 {
-  @apply font-semibold my-0;
-  /* font-family: var(--font-lora), serif; */
-}
-
-h4 {
-  @apply font-semibold my-0;
-  /* font-family: var(--font-lora), serif; */
-}
-
-h5 {
-  @apply font-semibold my-0;
-  /* font-family: var(--font-lora), serif; */
-}
-
-h6 {
-  @apply font-semibold my-0;
-  /* font-family: var(--font-lora), serif; */
-}
-
-/* Compatibility with legacy starter-kit utility names */
-@layer utilities {
-  .text-muted-foreground {
-    color: var(--app-shell-text-muted);
-  }
-
-  .text-foreground {
-    color: var(--app-shell-text);
-  }
+    body {
+        @apply bg-background font-sans text-foreground antialiased;
+    }
 }

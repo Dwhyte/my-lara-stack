@@ -22,22 +22,85 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/sail (SAIL) - v1
 - pestphp/pest (PEST) - v4
 - phpunit/phpunit (PHPUNIT) - v12
-- @inertiajs/vue3 (INERTIA_VUE) - v3
+- @inertiajs/react (INERTIA_REACT) - v3
+- react (REACT) - v19
+- react-dom (REACT_DOM) - v19
 - tailwindcss (TAILWINDCSS) - v4
-- vue (VUE) - v3
+- shadcn/ui (SHADCN) - v4
+- lucide-react (LUCIDE) - v1
+- zustand (ZUSTAND) - v5
 - @laravel/vite-plugin-wayfinder (WAYFINDER_VITE) - v0
 - eslint (ESLINT) - v9
 - prettier (PRETTIER) - v3
 
 ## Skills Activation
 
-This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
+This project has domain-specific skills available in `.cursor/skills/` and `.agents/skills/`. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
-- `laravel-best-practices` — Apply this skill whenever writing, reviewing, or refactoring Laravel PHP code. This includes creating or modifying controllers, models, migrations, form requests, policies, jobs, scheduled commands, service classes, and Eloquent queries. Triggers for N+1 and query performance issues, caching strategies, authorization and security patterns, validation, error handling, queue and job configuration, route definitions, and architectural decisions. Also use for Laravel code reviews and refactoring existing Laravel code to follow best practices. Covers any task involving Laravel backend PHP code patterns.
-- `wayfinder-development` — Use this skill for Laravel Wayfinder which auto-generates typed functions for Laravel controllers and routes. ALWAYS use this skill when frontend code needs to call backend routes or controller actions. Trigger when: connecting any React/Vue/Svelte/Inertia frontend to Laravel controllers, routes, building end-to-end features with both frontend and backend, wiring up forms or links to backend endpoints, fixing route-related TypeScript errors, importing from @/actions or @/routes, or running wayfinder:generate. Use Wayfinder route functions instead of hardcoded URLs. Covers: wayfinder() vite plugin, .url()/.get()/.post()/.form(), query params, route model binding, tree-shaking. Do not use for backend-only task
-- `pest-testing` — Use this skill for Pest PHP testing in Laravel projects only. Trigger whenever any test is being written, edited, fixed, or refactored — including fixing tests that broke after a code change, adding assertions, converting PHPUnit to Pest, adding datasets, and TDD workflows. Always activate when the user asks how to write something in Pest, mentions test files or directories (tests/Feature, tests/Unit, tests/Browser), or needs browser testing, smoke testing multiple pages for JS errors, or architecture tests. Covers: it()/expect() syntax, datasets, mocking, browser testing (visit/click/fill), smoke testing, arch(), Livewire component tests, RefreshDatabase, and all Pest 4 features. Do not use for factories, seeders, migrations, controllers, models, or non-test PHP code.
-- `inertia-vue-development` — Develops Inertia.js v3 Vue client-side applications. Activates when creating Vue pages, forms, or navigation; using <Link>, <Form>, useForm, useHttp, setLayoutProps, or router; working with deferred props, prefetching, optimistic updates, instant visits, or polling; or when user mentions Vue with Inertia, Vue pages, Vue forms, or Vue navigation.
-- `tailwindcss-development` — Always invoke when the user's message includes 'tailwind' in any form. Also invoke for: building responsive grid layouts (multi-column card grids, product grids), flex/grid page structures (dashboards with sidebars, fixed topbars, mobile-toggle navs), styling UI components (cards, tables, navbars, pricing sections, forms, inputs, badges), adding dark mode variants, fixing spacing or typography, and Tailwind v3/v4 work. The core use case: writing or fixing Tailwind utility classes in HTML templates (Blade, JSX, Vue). Skip for backend PHP logic, database queries, API routes, JavaScript with no HTML/CSS component, CSS file audits, build tool configuration, and vanilla CSS.
+- `laravel-best-practices` — Apply when writing, reviewing, or refactoring Laravel PHP code.
+- `wayfinder-development` — Use when frontend code calls backend routes or controller actions.
+- `pest-testing` — Use when writing, editing, fixing, or refactoring Pest tests.
+- `inertia-react-development` — Use when creating React pages, forms, or navigation with Inertia.
+- `tailwindcss-development` — Use when adding or fixing Tailwind CSS utility classes in JSX/TSX.
+- `app-ui` — Use when building or styling React UI: tokens, spacing, typography, icons, matching designs. Project-specific layer on top of shadcn.
+- `shadcn` skill — Use when installing, composing, or customizing shadcn/ui components (generic library rules in `.agents/skills/shadcn/`).
+
+=== .ai/react-shadcn-navigation rules ===
+
+# React + shadcn/ui + Inertia navigation
+
+This app uses **Inertia React** (no React Router). Use Inertia `<Link>` for in-app navigation and shadcn `<Button asChild>` when you need button styling on links.
+
+## Do
+
+- Use **`<Link href={route.url()}>`** from `@inertiajs/react` for in-app navigation.
+- Use **`<Button asChild><Link href={...} /></Button>`** for styled navigation buttons.
+- Import route URLs from Wayfinder: `@/actions/...` or `@/routes/...`.
+- Use shadcn components from `@/components/ui/*` before building custom UI.
+- Use `lucide-react` for icons in pages and components.
+
+## Avoid
+
+- Hardcoding URLs — use Wayfinder-generated route functions.
+- Wrapping `<button>` inside `<Link>` without `asChild` (invalid nesting).
+- Adding Vuetify or Vue-specific patterns — this stack is React + shadcn/ui.
+
+## Non-GET actions
+
+Use Inertia **`Link`** with **`method`**, **`router.post`**, or **`useForm`** — not plain anchor tags.
+
+## Layouts
+
+Pages live in `resources/js/pages/*.tsx`. Assign layouts per page via `Page.layout` (see `DemoA.tsx`). Default shell is `AppLayout`.
+
+## Theming
+
+Dark mode toggles the `.dark` class on `<html>` via `useAppearance` in `resources/js/hooks/use-appearance.ts`. shadcn CSS variables in `resources/css/app.css` drive light/dark surfaces. Brand intent and token guidance: `.ai/design/brand.md` and the **`app-ui` skill**.
+
+## State management: Zustand vs Inertia props
+
+Default to **Inertia props for server-owned data**; reach for **Zustand only for client-only UI state**.
+
+### Use Inertia props (not a store)
+
+- Data owned by the database or the request (users, records, auth, flags computed server-side).
+- Anything that must survive a full reload, be shareable via URL, or stay in sync with the backend.
+- Get it from `usePage().props` or page component props; mutate it via `router`, `useForm`, or `<Form>` so the server stays the source of truth.
+- After a successful write, let the Inertia response refresh props — do not mirror server data into a store.
+
+### Use Zustand (client-only UI state)
+
+- Ephemeral UI that never belongs on the server: modal/drawer open state, multi-step wizard position, sidebar collapse, unsaved filter/toggle state, counters, optimistic UI flags.
+- Cross-component UI state that would otherwise be awkward prop-drilling.
+- Stores live in `resources/js/stores/` as `use-*-store.ts` (see `resources/js/stores/use-demo-store.ts`). Select narrow slices: `useStore((s) => s.value)`.
+- Expose **domain hooks** (e.g. `useDemoToast()`) from store files — do not call `useDemoStore()` multiple times in a component; each call appears as a generic `BoundStore` in React DevTools. Redux DevTools extension + `devtools` middleware gives Pinia-like action history (store name `DemoStore`).
+
+### Avoid
+
+- Copying Inertia props into a Zustand store (creates two sources of truth that drift).
+- Persisting server data client-side to "avoid a request" — re-fetch via Inertia instead.
+
+=== foundation rules continued ===
 
 ## Conventions
 
@@ -56,7 +119,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 
 ## Frontend Bundling
 
-- If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `npm run build`, `npm run dev`, or `composer run dev`. Ask them.
+- If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `pnpm run build`, `pnpm run dev`, or `composer run dev`. Ask them.
 
 ## Documentation Files
 
@@ -97,7 +160,6 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Run Artisan commands directly via the command line (e.g., `php artisan route:list`). Use `php artisan list` to discover available commands and `php artisan [command] --help` to check parameters.
 - Inspect routes with `php artisan route:list`. Filter with: `--method=GET`, `--name=users`, `--path=api`, `--except-vendor`, `--only-vendor`.
 - Read configuration values using dot notation: `php artisan config:show app.name`, `php artisan config:show database.default`. Or read config files directly from the `config/` directory.
-- To check environment variables, read the `.env` file directly.
 
 ## Tinker
 
@@ -115,6 +177,12 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Use TitleCase for Enum keys: `FavoritePerson`, `BestLake`, `Monthly`.
 - Prefer PHPDoc blocks over inline comments. Only add inline comments for exceptionally complex logic.
 - Use array shape type definitions in PHPDoc blocks.
+
+=== deployments rules ===
+
+# Deployment
+
+- Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
 
 === herd rules ===
 
@@ -137,7 +205,26 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Inertia creates fully client-side rendered SPAs without modern SPA complexity, leveraging existing server-side patterns.
 - Components live in `resources/js/pages` (unless specified in `vite.config.js`). Use `Inertia::render()` for server-side routing instead of Blade views.
 - ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
-- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
+- IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
+
+=== inertia-react/core rules ===
+
+# Inertia + React
+
+- Pages are React function components in `resources/js/pages/*.tsx`.
+- Use `<Link>` and `<Form>` from `@inertiajs/react` for navigation and forms.
+- Use `useForm`, `usePage`, `router`, and `useHttp` from `@inertiajs/react` for client-side data flows.
+- IMPORTANT: Activate `inertia-react-development` when working with Inertia React patterns.
+
+=== shadcn/core rules ===
+
+# shadcn/ui
+
+- Components live in `resources/js/components/ui/`.
+- Add components with `pnpm dlx shadcn@latest add <name>`.
+- Use `cn()` from `@/lib/utils` for conditional class names.
+- Theme uses CSS variables in `resources/css/app.css` (Mira style, Neutral palette, Inter font).
+- IMPORTANT: Activate the shadcn skill when installing or composing shadcn components.
 
 # Inertia v3
 
@@ -181,7 +268,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 
 ## Vite Error
 
-- If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
+- If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `pnpm run build` or ask the user to run `pnpm run dev` or `composer run dev`.
 
 === wayfinder/core rules ===
 
@@ -201,14 +288,8 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 ## Pest
 
 - This project uses Pest for testing. Create tests: `php artisan make:test --pest {name}`.
+- The `{name}` argument should not include the test suite directory. Use `php artisan make:test --pest SomeFeatureTest` instead of `php artisan make:test --pest Feature/SomeFeatureTest`.
 - Run tests: `php artisan test --compact` or filter: `php artisan test --compact --filter=testName`.
 - Do NOT delete tests without approval.
-
-=== inertia-vue/core rules ===
-
-# Inertia + Vue
-
-Vue components must have a single root element.
-- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
 </laravel-boost-guidelines>

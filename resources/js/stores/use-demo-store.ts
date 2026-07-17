@@ -1,34 +1,20 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { useShallow } from 'zustand/react/shallow';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-type DemoStore = {
-    toastCount: number;
-    incrementToastCount: () => void;
-    reset: () => void;
-};
+export const useDemoStore = defineStore('demo', () => {
+    const toastCount = ref(0);
 
-export const useDemoStore = create<DemoStore>()(
-    devtools(
-        (set) => ({
-            toastCount: 0,
-            incrementToastCount: () =>
-                set(
-                    (state) => ({ toastCount: state.toastCount + 1 }),
-                    undefined,
-                    'incrementToastCount',
-                ),
-            reset: () => set({ toastCount: 0 }, undefined, 'reset'),
-        }),
-        { name: 'DemoStore', enabled: import.meta.env.DEV },
-    ),
-);
+    const incrementToastCount = () => {
+        toastCount.value += 1;
+    };
 
-export function useDemoToast() {
-    return useDemoStore(
-        useShallow((state) => ({
-            toastCount: state.toastCount,
-            incrementToastCount: state.incrementToastCount,
-        })),
-    );
-}
+    const reset = () => {
+        toastCount.value = 0;
+    };
+
+    return {
+        toastCount,
+        incrementToastCount,
+        reset,
+    };
+});

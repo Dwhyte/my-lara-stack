@@ -8,9 +8,9 @@ Color is never hardcoded in components. Every color comes from a semantic token 
   - `:root` and `.dark` OKLCH CSS variables
   - `@theme inline` mappings that expose Tailwind utilities (`bg-primary`, `text-muted-foreground`, etc.)
 - **`.ai/design/brand.md`** — human-readable brand intent (palette, fonts, radius). Update this when brand direction changes; then mirror values in `app.css`.
-- **`components.json`** — shadcn CLI config (style: `radix-mira`, base color: `neutral`). Run `pnpm dlx shadcn@latest apply` or edit `app.css` for theme changes — do not hardcode colors in TSX.
+- **`components.json`** — shadcn-vue CLI config (style: `reka-vega`, base color: `neutral`). Run `pnpm dlx shadcn-vue@latest apply` or edit `app.css` for theme changes — do not hardcode colors in Vue SFCs.
 
-Add a new color in **`app.css`** (both `:root` and `.dark`, plus `@theme inline` if needed) before using it. Never introduce raw hex or `oklch(...)` in a `.tsx` file.
+Add a new color in **`app.css`** (both `:root` and `.dark`, plus `@theme inline` if needed) before using it. Never introduce raw hex or `oklch(...)` in a `.vue` file.
 
 ## Core surface tokens
 

@@ -1,4 +1,4 @@
-import type { InertiaLinkProps } from '@inertiajs/react';
+import type { InertiaLinkProps } from '@inertiajs/vue3';
 
 export type BreadcrumbItem = {
     title: string;

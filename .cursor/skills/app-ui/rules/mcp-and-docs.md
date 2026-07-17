@@ -1,20 +1,19 @@
 # MCP & docs — verify before you write
 
-Don't guess component APIs. This project has MCP servers and docs tools that return version-correct answers.
+Don't guess component APIs. This project has docs tools that return version-correct answers.
 
-## shadcn → `user-shadcn` MCP and CLI
+## shadcn-vue → CLI
 
-Before composing or fixing shadcn components:
+Before composing or fixing shadcn-vue components:
 
-- `user-shadcn` MCP — search registries, view component source, get add commands
-- `pnpm dlx shadcn@latest docs <component>` — documentation and example URLs
-- `pnpm dlx shadcn@latest info --json` — installed components, aliases, preset, icon library
+- `pnpm dlx shadcn-vue@latest docs <component>` — documentation and example URLs
+- `pnpm dlx shadcn-vue@latest info --json` — installed components, aliases, preset, icon library
 
-Activate the **`shadcn` skill** (`.agents/skills/shadcn/`) for full workflow and critical rules.
+Activate the **`shadcn-vue` skill** (`.agents/skills/shadcn-vue/`) for full workflow and critical rules.
 
 ## Framework docs → Boost `search-docs`
 
-Use `search-docs` for Tailwind CSS v4, Inertia v3, and React specifics. Multiple broad topic queries beat one narrow query, e.g. `['deferred props', 'skeleton']`, `['form validation', 'useForm']`.
+Use `search-docs` for Tailwind CSS v4, Inertia v3, and Vue specifics. Multiple broad topic queries beat one narrow query, e.g. `['deferred props', 'skeleton']`, `['form validation', 'useForm']`.
 
 ## Tailwind utilities → `tailwindcss-development` skill
 
@@ -27,7 +26,7 @@ When matching a mockup or extending the palette, read the brand doc first, then 
 ## Order of operations
 
 1. Pattern exists in repo? Follow it (Consistency First).
-2. Need shadcn API / composition rules? **`shadcn` skill** + `user-shadcn` MCP + `shadcn docs`.
-3. Need Tailwind/Inertia/React syntax? `search-docs` + **`tailwindcss-development`** / **`inertia-react-development`** skills.
+2. Need shadcn-vue API / composition rules? **`shadcn-vue` skill** + `shadcn-vue docs`.
+3. Need Tailwind/Inertia/Vue syntax? `search-docs` + **`tailwindcss-development`** / **`inertia-vue-development`** skills.
 4. Need project tokens, spacing, or brand? **`app-ui` skill** rule files + `.ai/design/brand.md`.
 5. Only then write the component.

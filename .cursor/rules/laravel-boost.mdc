@@ -24,12 +24,11 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
 - phpunit/phpunit (PHPUNIT) - v12
-- @inertiajs/react (INERTIA) - v3
-- react (REACT) - v19
-- react-dom (REACT_DOM) - v19
-- shadcn/ui (SHADCN) - v4
-- lucide-react (LUCIDE) - v1
-- zustand (ZUSTAND) - v5
+- @inertiajs/vue3 (INERTIA) - v3
+- vue (VUE) - v3
+- shadcn-vue (SHADCN_VUE) - latest
+- @lucide/vue (LUCIDE) - v1
+- pinia (PINIA) - v3
 - @laravel/vite-plugin-wayfinder (WAYFINDER) - v0
 - tailwindcss (TAILWINDCSS) - v4
 
@@ -38,10 +37,10 @@ This application is a Laravel application and its main Laravel ecosystems packag
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
 - `wayfinder-development` — Activates whenever referencing backend routes in frontend components. Use when importing from @/actions or @/routes, calling Laravel routes from TypeScript, or working with Wayfinder route functions.
-- `inertia-react-development` — Develops Inertia.js v3 React client-side applications. Activates when creating React pages, forms, or navigation; using Link, Form, useForm, useHttp, or router; working with deferred props, prefetching, or polling; or when user mentions React with Inertia.
+- `inertia-vue-development` — Develops Inertia.js v3 Vue client-side applications. Activates when creating Vue pages, forms, or navigation; using Link, Form, useForm, useHttp, or router; working with deferred props, prefetching, or polling; or when user mentions Vue with Inertia.
 - `tailwindcss-development` — Styles applications using Tailwind CSS v4 utilities. Activates when adding styles, restyling components, working with gradients, spacing, layout, flex, grid, responsive design, dark mode, colors, typography, or borders; or when the user mentions CSS, styling, classes, Tailwind, restyle, hero section, cards, buttons, or any visual/UI changes.
-- `app-ui` — Project UI skill: shadcn-first, design tokens from `resources/css/app.css`, spacing/typography/icons, brand reference in `.ai/design/brand.md`. Activate for any React UI work; defer generic shadcn composition to the `shadcn` skill.
-- `shadcn` — Generic shadcn/ui skill in `.agents/skills/shadcn/`. Activate when adding, composing, or fixing shadcn components (forms, overlays, CLI, critical rules).
+- `app-ui` — Project UI skill: shadcn-vue-first, design tokens from `resources/css/app.css`, spacing/typography/icons, brand reference in `.ai/design/brand.md`. Activate for any Vue UI work; defer generic shadcn-vue composition to the `shadcn-vue` skill.
+- `shadcn-vue` — Generic shadcn-vue skill in `.agents/skills/shadcn-vue/`. Activate when adding, composing, or fixing shadcn-vue components (forms, overlays, CLI, critical rules).
 
 ## Conventions
 
@@ -160,7 +159,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Inertia creates fully client-side rendered SPAs without modern SPA complexity, leveraging existing server-side patterns.
 - Components live in `resources/js/Pages` (unless specified in `vite.config.js`). Use `Inertia::render()` for server-side routing instead of Blade views.
 - ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
-- IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
+- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
 === inertia-laravel/v3 rules ===
 
@@ -287,21 +286,21 @@ Wayfinder generates TypeScript functions for Laravel routes. Import from `@/acti
 - To run all tests in a file: `php artisan test --compact tests/Feature/ExampleTest.php`.
 - To filter on a particular test name: `php artisan test --compact --filter=testName` (recommended after making a change to a related file).
 
-=== inertia-react/core rules ===
+=== inertia-vue/core rules ===
 
-# Inertia + React
+# Inertia + Vue
 
-- Pages are React function components in `resources/js/pages/*.tsx`.
-- Use `<Link>` and `<Form>` from `@inertiajs/react` for navigation and forms.
-- IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
+- Pages are Vue SFCs in `resources/js/pages/*.vue`.
+- Use `<Link>` and `<Form>` from `@inertiajs/vue3` for navigation and forms.
+- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
 === state management rules ===
 
-# State: Zustand vs Inertia props
+# State: Pinia vs Inertia props
 
 - Default to Inertia props for server-owned data (DB records, auth, server-computed flags). Read from `usePage().props`; mutate via `router`, `useForm`, or `<Form>` and let the Inertia response refresh props.
-- Use Zustand ONLY for client-only UI state (modal/drawer open, wizard step, sidebar collapse, counters, optimistic flags). Stores live in `resources/js/stores/use-*-store.ts`; select narrow slices with `useStore((s) => s.value)`. Expose domain hooks (e.g. `useDemoToast()`) so React DevTools shows readable names — avoid multiple raw `useStore()` calls (each shows as `BoundStore`). Use Redux DevTools extension + `devtools` middleware for action timeline.
-- Do NOT copy Inertia props into a Zustand store, and do NOT persist server data client-side to skip a request.
+- Use Pinia ONLY for client-only UI state (modal/drawer open, wizard step, sidebar collapse, counters, optimistic flags). Stores live in `resources/js/stores/` as `defineStore` modules. Pinia integrates natively with Vue DevTools.
+- Do NOT copy Inertia props into a Pinia store, and do NOT persist server data client-side to skip a request.
 
 === tailwindcss/core rules ===
 

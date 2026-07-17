@@ -1,15 +1,15 @@
 # Spacing & layout
 
-Consistent spacing makes new pages feel like part of the same app. Match `DemoA.tsx` / `DemoB.tsx` unless a sibling component establishes a different local pattern.
+Consistent spacing makes new pages feel like part of the same app. Match `DemoA.vue` / `DemoB.vue` unless a sibling component establishes a different local pattern.
 
 ## Page shell
 
 Centered demo/marketing-style pages:
 
-```tsx
-<div className="flex min-h-screen items-center justify-center bg-background p-8">
-  <div className="flex w-full max-w-2xl flex-col gap-8">
-    {/* header block, card, footer note */}
+```vue
+<div class="flex min-h-screen items-center justify-center bg-background p-8">
+  <div class="flex w-full max-w-2xl flex-col gap-8">
+    <!-- header block, card, footer note -->
   </div>
 </div>
 ```

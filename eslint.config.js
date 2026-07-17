@@ -2,10 +2,9 @@ import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import prettier from 'eslint-config-prettier/flat';
 import importPlugin from 'eslint-plugin-import';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
+import pluginVue from 'eslint-plugin-vue';
 import tseslint from 'typescript-eslint';
+import vueParser from 'vue-eslint-parser';
 
 const controlStatements = [
     'if',
@@ -27,18 +26,23 @@ const paddingAroundControl = [
 export default tseslint.config(
     js.configs.recommended,
     ...tseslint.configs.recommended,
-    react.configs.flat.recommended,
-    react.configs.flat['jsx-runtime'],
-    reactHooks.configs.flat.recommended,
-    jsxA11y.flatConfigs.recommended,
+    ...pluginVue.configs['flat/recommended'],
+    {
+        files: ['**/*.vue'],
+        languageOptions: {
+            parser: vueParser,
+            parserOptions: {
+                parser: tseslint.parser,
+                extraFileExtensions: ['.vue'],
+                sourceType: 'module',
+            },
+        },
+    },
     {
         plugins: {
             import: importPlugin,
         },
         settings: {
-            react: {
-                version: 'detect',
-            },
             'import/resolver': {
                 typescript: {
                     alwaysTryTypes: true,
@@ -48,8 +52,6 @@ export default tseslint.config(
             },
         },
         rules: {
-            'react/prop-types': 'off',
-            'react/react-in-jsx-scope': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/consistent-type-imports': [
                 'error',
@@ -72,6 +74,7 @@ export default tseslint.config(
                 'error',
                 'prefer-top-level',
             ],
+            'vue/multi-word-component-names': 'off',
         },
     },
     {
@@ -94,7 +97,7 @@ export default tseslint.config(
             'bootstrap/ssr',
             'vite.config.ts',
             'resources/js/actions/**',
-            'resources/js/components/ui/*',
+            'resources/js/components/ui/**',
             'resources/js/routes/**',
             'resources/js/wayfinder/**',
         ],

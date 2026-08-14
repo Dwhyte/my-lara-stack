@@ -7,99 +7,15 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 ## Foundational Context
 
-This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
+This application is a Laravel application running on PHP 8.4. You are an expert with the Laravel ecosystem. Always use the APIs that match the installed major version of each package — do not assume a version.
 
-- php - 8.4
-- inertiajs/inertia-laravel (INERTIA_LARAVEL) - v3
-- laravel/fortify (FORTIFY) - v1
-- laravel/framework (LARAVEL) - v13
-- laravel/prompts (PROMPTS) - v0
-- laravel/wayfinder (WAYFINDER) - v0
-- laravel/boost (BOOST) - v2
-- laravel/mcp (MCP) - v0
-- laravel/pail (PAIL) - v1
-- laravel/pint (PINT) - v1
-- laravel/sail (SAIL) - v1
-- pestphp/pest (PEST) - v4
-- phpunit/phpunit (PHPUNIT) - v12
-- @inertiajs/vue3 (INERTIA_VUE) - v3
-- vue (VUE) - v3
-- tailwindcss (TAILWINDCSS) - v4
-- shadcn-vue (SHADCN_VUE) - latest
-- @lucide/vue (LUCIDE) - v1
-- pinia (PINIA) - v3
-- @laravel/vite-plugin-wayfinder (WAYFINDER_VITE) - v0
-- eslint (ESLINT) - v9
-- prettier (PRETTIER) - v3
+Before relying on a package's API, confirm its installed version:
+- PHP packages: run `composer show --direct` to list direct dependencies with versions, or `composer show <vendor/package>` for a single package.
+- JS packages: check `package.json` for the installed versions.
 
 ## Skills Activation
 
-This project has domain-specific skills available in `.cursor/skills/` and `.agents/skills/`. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
-
-- `laravel-best-practices` — Apply when writing, reviewing, or refactoring Laravel PHP code.
-- `wayfinder-development` — Use when frontend code calls backend routes or controller actions.
-- `pest-testing` — Use when writing, editing, fixing, or refactoring Pest tests.
-- `inertia-vue-development` — Use when creating Vue pages, forms, or navigation with Inertia.
-- `tailwindcss-development` — Use when adding or fixing Tailwind CSS utility classes in Vue SFCs.
-- `app-ui` — Use when building or styling Vue UI: tokens, spacing, typography, icons, matching designs. Project-specific layer on top of shadcn-vue.
-- `shadcn-vue` skill — Use when installing, composing, or customizing shadcn-vue components (generic library rules in `.agents/skills/shadcn-vue/`).
-
-=== .ai/vue-shadcn-navigation rules ===
-
-# Vue + shadcn-vue + Inertia navigation
-
-This app uses **Inertia Vue 3** (no Vue Router). Use Inertia `<Link>` for in-app navigation and shadcn-vue `<Button as-child>` when you need button styling on links.
-
-## Do
-
-- Use **`<Link :href="route.url()">`** from `@inertiajs/vue3` for in-app navigation.
-- Use **`<Button as-child><Link :href="..." /></Button>`** for styled navigation buttons.
-- Import route URLs from Wayfinder: `@/actions/...` or `@/routes/...`.
-- Use shadcn-vue components from `@/components/ui/*` before building custom UI.
-- Use `@lucide/vue` for icons in pages and components.
-
-## Avoid
-
-- Hardcoding URLs — use Wayfinder-generated route functions.
-- Wrapping `<button>` inside `<Link>` without `as-child` (invalid nesting).
-- Adding React or Vuetify patterns — this stack is Vue + shadcn-vue.
-
-## Non-GET actions
-
-Use Inertia **`Link`** with **`method`**, **`router.post`**, or **`useForm`** — not plain anchor tags.
-
-## Layouts
-
-Pages live in `resources/js/pages/*.vue`. Assign layouts via `defineOptions({ layout: AppLayout })` (see `DemoA.vue`). Default shell is `AppLayout`.
-
-## Theming
-
-Dark mode toggles the `.dark` class on `<html>` via `useAppearance` in `resources/js/composables/use-appearance.ts`. shadcn-vue CSS variables in `resources/css/app.css` drive light/dark surfaces. Brand intent and token guidance: `.ai/design/brand.md` and the **`app-ui` skill**.
-
-## State management: Pinia vs Inertia props
-
-Default to **Inertia props for server-owned data**; reach for **Pinia only for client-only UI state**.
-
-### Use Inertia props (not a store)
-
-- Data owned by the database or the request (users, records, auth, flags computed server-side).
-- Anything that must survive a full reload, be shareable via URL, or stay in sync with the backend.
-- Get it from `usePage().props` or page component props; mutate it via `router`, `useForm`, or `<Form>` so the server stays the source of truth.
-- After a successful write, let the Inertia response refresh props — do not mirror server data into a store.
-
-### Use Pinia (client-only UI state)
-
-- Ephemeral UI that never belongs on the server: modal/drawer open state, multi-step wizard position, sidebar collapse, unsaved filter/toggle state, counters, optimistic UI flags.
-- Cross-component UI state that would otherwise be awkward prop-drilling.
-- Stores live in `resources/js/stores/` as `defineStore` modules (see `resources/js/stores/use-demo-store.ts`).
-- Pinia integrates natively with Vue DevTools — named stores, state, actions, and time-travel without extra middleware.
-
-### Avoid
-
-- Copying Inertia props into a Pinia store (creates two sources of truth that drift).
-- Persisting server data client-side to "avoid a request" — re-fetch via Inertia instead.
-
-=== foundation rules continued ===
+This project has domain-specific skills available in `**/skills/**`. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
 ## Conventions
 
@@ -154,6 +70,11 @@ Default to **Inertia props for server-owned data**; reach for **Pinia only for c
 3. Combine words and phrases for mixed queries: `middleware "rate limit"`.
 4. Use multiple queries for OR logic: `queries=["authentication", "middleware"]`.
 
+## Project Rules
+
+- This project contains committed, area-grouped rules in `.ai/rules` when that directory exists (settled decisions, non-obvious traps, standing constraints). Framework and package guidelines that only apply to specific paths (testing, frontend, components) also live there, under `.ai/rules/boost` — this is not just recorded decisions, it is load-bearing guidance you have not seen inline. Before you enter plan mode or create/edit any file, you MUST first: open @.ai/rules/index.md (it maps file globs to rule files), read every rule file whose globs cover the path(s) in scope, and run `grep -rin 'keyword' .ai/rules` to catch what a path match alone misses. Do not write code until you have read and are following every matching rule. If `.ai/rules` does not exist, continue without it.
+- Record durable rules with `record-rule` so the next agent or teammate inherits them instead of working them out again. Pass a `glob` (e.g. `app/Http/Controllers/**`), a short `title`, and a few-line `note`. Always use `record-rule`, never your native memory or notes tool — native memory is personal and session-scoped; only `.ai/rules` is shared with the team and persists in the repo.
+
 ## Artisan
 
 - Run Artisan commands directly via the command line (e.g., `php artisan route:list`). Use `php artisan list` to discover available commands and `php artisan [command] --help` to check parameters.
@@ -205,25 +126,6 @@ Default to **Inertia props for server-owned data**; reach for **Pinia only for c
 - Components live in `resources/js/pages` (unless specified in `vite.config.js`). Use `Inertia::render()` for server-side routing instead of Blade views.
 - ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
 - IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
-
-=== inertia-vue/core rules ===
-
-# Inertia + Vue
-
-- Pages are Vue SFCs in `resources/js/pages/*.vue`.
-- Use `<Link>` and `<Form>` from `@inertiajs/vue3` for navigation and forms.
-- Use `useForm`, `usePage`, `router`, and `useHttp` from `@inertiajs/vue3` for client-side data flows.
-- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue patterns.
-
-=== shadcn-vue/core rules ===
-
-# shadcn-vue
-
-- Components live in `resources/js/components/ui/`.
-- Add components with `pnpm dlx shadcn-vue@latest add <name>`.
-- Use `cn()` from `@/lib/utils` for conditional class names.
-- Theme uses CSS variables in `resources/css/app.css` (Reka Vega style, Neutral palette, Inter font).
-- IMPORTANT: Activate the shadcn-vue skill when installing or composing shadcn-vue components.
 
 # Inertia v3
 
@@ -290,5 +192,12 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 - The `{name}` argument should not include the test suite directory. Use `php artisan make:test --pest SomeFeatureTest` instead of `php artisan make:test --pest Feature/SomeFeatureTest`.
 - Run tests: `php artisan test --compact` or filter: `php artisan test --compact --filter=testName`.
 - Do NOT delete tests without approval.
+
+=== inertia-vue/core rules ===
+
+# Inertia + Vue
+
+Vue components must have a single root element.
+- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
 </laravel-boost-guidelines>

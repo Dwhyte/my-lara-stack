@@ -1,6 +1,6 @@
 ---
 name: app-ui
-description: 'Apply this skill whenever building, styling, or refactoring Vue UI in this Laravel starter kit. This includes creating pages or components in resources/js; choosing or composing shadcn-vue components; applying Tailwind CSS utilities; working with spacing, padding, gap, radius, layout, grid, responsive breakpoints, dark mode; typography; colors and design tokens; icons; badges; active/hover states; or matching a design or mockup. Always reach for a shadcn-vue component first and adapt it with project tokens; build from scratch only when no primitive fits. Triggers on phrases like restyle, hero, card, button, drawer, sidebar, nav, modal, UI, component, layout, padding, spacing, colors, theme, shadcn, or Tailwind.'
+description: 'Apply this skill whenever building, styling, or refactoring Vue UI in this Laravel starter kit. This includes creating pages or components in resources/js; composing Vuetify 4 components; applying Tailwind CSS utilities; working with spacing, padding, gap, radius, layout, grid, responsive breakpoints, dark mode; typography; colors and design tokens; Iconify icons; badges; active/hover states; or matching a design or mockup. Always reach for a Vuetify component first and adapt it with project tokens; build from scratch only when no primitive fits.'
 license: MIT
 metadata:
     author: my-lara-stack
@@ -8,63 +8,57 @@ metadata:
 
 # App UI
 
-How this starter kit builds and styles UI: **shadcn-vue components first**, adapted with **Tailwind utilities** bound to **design tokens**, at a consistent spacing/radius/type scale. The goal is visual consistency — every new component should look like it belongs with `DemoA`, `DemoB`, and `AppLayout`.
+How this starter kit builds and styles UI: **Vuetify 4 components first**, adapted with **Tailwind utilities** bound to **design tokens**, at a consistent spacing/radius/type scale. The goal is visual consistency — every new component should look like it belongs with `DemoA`, `DemoB`, and `layouts/app.vue`.
 
 ## Consistency First
 
 Before applying any rule, check what the app already does. Open 2–3 sibling files in `resources/js/pages`, `resources/js/components`, or `resources/js/layouts` and match their structure, spacing, and token usage. An established local pattern always wins over a theoretically better one.
 
-These rules are the defaults for when no pattern exists yet, not overrides for existing patterns.
-
 ## The one-line philosophy
 
-Reach for a shadcn-vue primitive → bind colors to tokens → adjust spacing/radius with Tailwind → only hand-roll when nothing fits.
+Reach for a Vuetify primitive → bind colors to tokens → adjust spacing/radius with Tailwind → only hand-roll when nothing fits.
 
 ## Quick Reference
 
-### 1. shadcn-vue-first → `rules/shadcn-first.md`
+### 1. Vuetify-first
 
-- Always try `@/components/ui/*` before custom markup; compose, don't replace
-- Add missing components with `pnpm dlx shadcn-vue@latest add <name>`
-- Inertia navigation: `<Button as-child><Link :href="..." /></Button>`, never `<Link><button>`
-- For composition, forms, overlays, and icons — defer to the **`shadcn-vue` skill** (`.agents/skills/shadcn-vue/`)
+- Use `v-btn`, `v-card`, `v-dialog`, `v-text-field`, `v-switch`, etc. before custom markup
+- Navigation: `to` prop on Vuetify components via `vuetify-inertia-link`
+- Surface elevation: `surface-raised`, `surface-chrome-header`, `surface-chrome-sidebar`
+- Primary CTAs: `color="primary"` + `class="shadow-brand"`
 
 ### 2. Design tokens → `rules/design-tokens.md`
 
 - Never hardcode hex; use semantic tokens (`bg-primary`, `text-muted-foreground`, `border-border`)
-- Registry: `resources/css/app.css` (`:root`, `.dark`, `@theme inline`)
+- Registry: `resources/css/tokens/` and `resources/css/vuetify-overrides.css`
 - Brand reference: `.ai/design/brand.md`
-- Preset: Reka Vega style, Neutral palette (see `components.json`)
+- Vuetify theme bridge: `resources/js/theme/tokens.ts`
 
 ### 3. Spacing & layout → `rules/spacing-layout.md`
 
-- Page canvas: `min-h-screen bg-background p-8`
-- Content width: `max-w-2xl` for focused pages, `max-w-4xl` for wider layouts
-- Vertical stacks: `flex flex-col gap-*` (not `space-y-*`)
-- Card padding: use `CardHeader` / `CardContent` / `CardFooter` — don't flatten into one block
+- App pages inside shell: `min-h-full p-4 md:p-8`
+- Content width: `max-w-2xl` for focused pages
+- Vertical stacks: `space-y-*` or `flex flex-col gap-*`
 
-### 4. Typography → `rules/typography.md`
+### 4. Typography
 
-- Body: `font-sans` (Inter Variable)
-- Headings: `text-foreground` with weight/size ladder
+- Body: Inter (`font-sans`)
+- Display headings: Manrope (`font-display`)
 - Secondary copy: `text-muted-foreground`
 
-### 5. Icons → `rules/icons.md`
+### 5. Icons
 
-- Pages and feature components: `@lucide/vue`
-- Icons inside shadcn-vue `Button` and other UI primitives: follow the **`shadcn-vue` skill**
+- Iconify Lucide: `<v-icon icon="lucide:bell" />` or `<IconifyIcon name="lucide:bell" />`
 
-### 6. MCP & docs → `rules/mcp-and-docs.md`
+### 6. Docs
 
-- Verify shadcn-vue component APIs with `pnpm dlx shadcn-vue@latest docs <component>`
+- Vuetify MCP / docs for component APIs
 - Boost `search-docs` for Tailwind v4 / Inertia / Vue
 - Activate **`tailwindcss-development`** for utility-class work
 
 ## How to Apply
 
-1. Identify the task (new page, restyle, layout) and read the relevant rule file(s) above.
-2. Check sibling files for an existing pattern — follow it (Consistency First).
-3. Pick the shadcn-vue primitive; verify its API via `shadcn-vue docs` / `search-docs`.
-4. Bind colors to tokens, set spacing/radius from the scale, add icons via `@lucide/vue`.
-5. For generic shadcn-vue composition rules (FieldGroup, DialogTitle, gap vs space-y), follow the **`shadcn-vue` skill** — do not duplicate them here.
-6. Keep code comment-free per **`no-narrative-comments`** — document patterns in `README.md` or skills, not in source files.
+1. Identify the task and check sibling files for existing patterns.
+2. Pick the Vuetify primitive; verify props via Vuetify docs.
+3. Bind colors to tokens, set spacing from the scale, add Iconify icons.
+4. Keep code comment-free per **`no-narrative-comments`**.

@@ -1,34 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Foundation\DevCommands;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Head\Facades\Head;
+use Laravel\Head\HeadBuilder;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureDevCommands();
+        $this->configureHead();
     }
 
-    /**
-     * Configure default behaviors for production-ready applications.
-     */
     protected function configureDefaults(): void
     {
         Date::use(CarbonImmutable::class);
@@ -46,5 +44,36 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+    }
+
+    protected function configureDevCommands(): void
+    {
+        if (! $this->app->environment('local')) {
+            return;
+        }
+
+        DevCommands::tabs();
+        DevCommands::withTimestamps();
+    }
+
+    protected function configureHead(): void
+    {
+        $appName = config('app.name');
+
+        Head::defaults(function (HeadBuilder $head) use ($appName): void {
+            $head
+                ->title($appName, suffix: " - {$appName}")
+                ->description('Build something great.')
+                ->canonical()
+                ->searchableByRobots();
+        });
+
+        Head::inertiaGlobals(function (HeadBuilder $head): void {
+            $head
+                ->viewport('width=device-width, initial-scale=1')
+                ->favicon('/favicon.ico', sizes: 'any')
+                ->link('icon', '/favicon.svg', ['type' => 'image/svg+xml'])
+                ->appleTouchIcon('/apple-touch-icon.png');
+        });
     }
 }

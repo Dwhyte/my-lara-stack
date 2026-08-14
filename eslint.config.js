@@ -3,8 +3,11 @@ import stylistic from '@stylistic/eslint-plugin';
 import prettier from 'eslint-config-prettier/flat';
 import importPlugin from 'eslint-plugin-import';
 import pluginVue from 'eslint-plugin-vue';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import vueParser from 'vue-eslint-parser';
+
+import autoImportGlobals from './.eslintrc-auto-import.json' with { type: 'json' };
 
 const controlStatements = [
     'if',
@@ -27,6 +30,20 @@ export default tseslint.config(
     js.configs.recommended,
     ...tseslint.configs.recommended,
     ...pluginVue.configs['flat/recommended'],
+    {
+        files: ['resources/js/**/*.{ts,vue}'],
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...Object.fromEntries(
+                    Object.entries(autoImportGlobals.globals).map(([name, enabled]) => [
+                        name,
+                        enabled ? 'readonly' : 'off',
+                    ]),
+                ),
+            },
+        },
+    },
     {
         files: ['**/*.vue'],
         languageOptions: {
@@ -97,7 +114,6 @@ export default tseslint.config(
             'bootstrap/ssr',
             'vite.config.ts',
             'resources/js/actions/**',
-            'resources/js/components/ui/**',
             'resources/js/routes/**',
             'resources/js/wayfinder/**',
         ],

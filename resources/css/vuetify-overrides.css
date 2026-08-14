@@ -1,0 +1,504 @@
+/**
+ * Slim Vuetify shell overrides. Full palette lives in `main.css`; this file
+ * only shapes chrome density and the rounded button look from the pre-Linear shell.
+ */
+@layer vuetify-overrides {
+  /* .v-application:not(.onboarding-app) {
+        font-size: var(--app-text-body);
+    } */
+
+  /**
+   * The app shell (`AppLayout` / `OnboardingLayout`) pins the viewport and
+   * scrolls inside `v-main`. Vuetify's `__wrap` only sets `min-height`, so the
+   * inner `h-full` scroll area can't resolve a height and the page grows past
+   * the clipped `v-app` instead of scrolling. Give the wrap a definite height.
+   */
+  .v-application.app-layout > .v-application__wrap {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  @media (max-width: 839px) {
+    .v-application
+      .v-navigation-drawer.surface-chrome-sidebar.v-navigation-drawer--temporary {
+      z-index: 2001;
+    }
+  }
+
+  .v-application:not(.onboarding-app) .v-btn {
+    border-radius: var(--radius-lg);
+  }
+
+  .v-application:not(.onboarding-app) .v-card,
+  .v-application:not(.onboarding-app) .v-sheet.v-card {
+    border-radius: var(--radius-2xl);
+  }
+
+  .v-application .v-navigation-drawer.surface-chrome-sidebar,
+  .v-application .v-navigation-drawer.surface-chrome-panel-end {
+    background-color: var(--elevation-raised) !important;
+    border: none !important;
+  }
+
+  .v-application .v-navigation-drawer.surface-chrome-sidebar {
+    box-shadow: var(--shadow-chrome-sidebar) !important;
+  }
+
+  .v-application .v-navigation-drawer.surface-chrome-panel-end {
+    box-shadow: var(--shadow-chrome-panel-end) !important;
+  }
+
+  .v-application .v-card.surface-raised,
+  .v-application .v-card.surface-flat,
+  .v-application .v-card.surface-emphasis,
+  .v-application .v-card.surface-overlay {
+    border: 1px solid var(--elevation-raised-border) !important;
+  }
+
+  .v-application .v-card.surface-raised {
+    background-color: var(--elevation-raised) !important;
+    box-shadow: var(--shadow-raised) !important;
+  }
+
+  .v-application .v-app-bar.surface-raised {
+    background-color: var(--elevation-raised) !important;
+    border-bottom: 1px solid var(--elevation-raised-border) !important;
+    box-shadow: var(--shadow-raised) !important;
+  }
+
+  .v-application .v-app-bar.surface-raised .v-toolbar__content,
+  .v-application .v-app-bar.surface-raised .v-toolbar__extension {
+    background-color: var(--elevation-raised) !important;
+  }
+
+  .v-application .v-card.surface-flat {
+    background-color: var(--elevation-raised) !important;
+    box-shadow: none !important;
+  }
+
+  .v-application .v-card.surface-emphasis {
+    background-color: var(--primary-soft) !important;
+    border-color: var(--primary-edge) !important;
+    box-shadow: var(--shadow-raised) !important;
+  }
+
+  .v-application .v-card.surface-overlay {
+    background-color: var(--elevation-raised) !important;
+    box-shadow: var(--shadow-overlay) !important;
+  }
+
+  .v-theme--light .v-divider {
+    border-color: rgb(26 26 34 / 0.08) !important;
+    opacity: 1 !important;
+  }
+
+  .v-theme--dark .v-divider {
+    border-color: rgb(255 255 255 / 0.04) !important;
+    opacity: 1 !important;
+  }
+
+  .v-btn {
+    font-family: var(--font-inter), var(--font-sans), sans-serif;
+    text-transform: none;
+    padding: 6px 12px;
+    min-height: 32px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .v-btn.v-btn--variant-flat.bg-primary {
+    box-shadow: var(--shadow-brand);
+  }
+
+  .v-btn.v-btn--variant-outlined {
+    background-color: var(--card);
+    border-color: var(--input) !important;
+    color: var(--ink);
+  }
+
+  .v-btn.v-btn--variant-outlined:hover {
+    border-color: var(--muted-foreground) !important;
+  }
+
+  .v-btn.btn-citeble-row {
+    height: 38px;
+    min-height: 38px;
+    font-size: 12.5px;
+    padding-inline: 15px;
+  }
+
+  .v-btn.btn-citeble-action {
+    height: 44px;
+    min-height: 44px;
+    font-size: 15px;
+    padding-inline: 20px;
+  }
+
+  .v-btn--size-small {
+    font-size: 11px;
+    padding: 4px 10px;
+    min-height: 28px;
+  }
+
+  .v-list-item-title {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 0.875rem;
+  }
+
+  /**
+   * Traffic control + chart-adjacent hover hints. Applied via
+   * `content-class="traffic-ui-tooltip"` on `v-tooltip`.
+   */
+  .v-overlay__content.traffic-ui-tooltip,
+  .v-overlay__content.app-ui-tooltip {
+    background: rgb(20 20 24 / 0.96) !important;
+    color: rgb(236 237 240) !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    font-family:
+      var(--font-sans), ui-sans-serif, system-ui, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.005em;
+    line-height: 1.35 !important;
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.4),
+      0 8px 24px rgb(0 0 0 / 0.25) !important;
+    border: none !important;
+    max-width: 260px;
+  }
+
+  .v-snackbar .toast-host-content {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.01em;
+    border: 0 !important;
+    border-bottom-width: 2px !important;
+    border-bottom-style: solid !important;
+  }
+
+  .v-snackbar .toast-host-content.bg-success {
+    border-bottom-color: var(--success-edge) !important;
+  }
+
+  .v-snackbar .toast-host-content.bg-error {
+    border-bottom-color: var(--error-edge) !important;
+  }
+
+  .v-snackbar .toast-host-content.bg-warning {
+    border-bottom-color: var(--warning-edge) !important;
+  }
+
+  .v-snackbar .toast-host-content.bg-info {
+    border-bottom-color: var(--info) !important;
+  }
+
+  .v-snackbar .toast-host-content.bg-primary {
+    border-bottom-color: var(--primary-edge) !important;
+  }
+
+  .v-snackbar .toast-host-content.bg-surface {
+    border-bottom-color: color-mix(
+      in srgb,
+      var(--foreground) 10%,
+      transparent
+    ) !important;
+  }
+
+  .v-snackbar .toast-host-content .v-snackbar__content {
+    padding-inline: 16px;
+    padding-block: 12px;
+  }
+
+  .v-snackbar .toast-host-content .v-snackbar__actions {
+    padding-inline-end: 8px;
+  }
+
+  .auth-layout .auth-field .v-field,
+  .onboarding-layout .auth-field .v-field {
+    background-color: var(--auth-input-fill) !important;
+    border-radius: var(--auth-radius-control) !important;
+    box-shadow: none !important;
+    min-height: 52px;
+  }
+
+  .auth-layout .auth-field .v-field__input,
+  .onboarding-layout .auth-field .v-field__input {
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+
+  .auth-layout .auth-underline-field-row,
+  .onboarding-layout .auth-underline-field-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+  }
+
+  .auth-layout .auth-underline-field-prefix,
+  .onboarding-layout .auth-underline-field-prefix {
+    flex-shrink: 0;
+    padding-bottom: 6px;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: var(--auth-ink);
+    line-height: 1.5;
+  }
+
+  .auth-layout .auth-underline-field-row .auth-underline-field,
+  .onboarding-layout .auth-underline-field-row .auth-underline-field {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .auth-layout .auth-underline-field .v-field,
+  .onboarding-layout .auth-underline-field .v-field {
+    background: transparent !important;
+    box-shadow: none !important;
+    --v-field-border-opacity: 1;
+    color: rgb(var(--v-theme-primary));
+  }
+
+  .auth-layout .auth-underline-field .v-field__outline,
+  .onboarding-layout .auth-underline-field .v-field__outline {
+    opacity: 1;
+  }
+
+  .auth-layout .auth-underline-field .v-field__input,
+  .onboarding-layout .auth-underline-field .v-field__input {
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+
+  .auth-layout .auth-underline-field .v-messages,
+  .onboarding-layout .auth-underline-field .v-messages {
+    color: var(--auth-muted);
+    font-size: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .auth-cta-btn,
+  .jobs-hub-cta,
+  .auth-layout .auth-google-btn,
+  .onboarding-layout .auth-google-btn {
+    min-height: 52px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
+  }
+
+  .auth-cta-btn,
+  .jobs-hub-cta {
+    background-color: var(--auth-cta) !important;
+    color: var(--auth-cta-foreground) !important;
+    border-radius: var(--auth-radius-button) !important;
+    text-transform: none;
+    box-shadow: none !important;
+  }
+
+  .auth-cta-btn:hover,
+  .jobs-hub-cta:hover {
+    background-color: var(--auth-cta-hover) !important;
+  }
+
+  .auth-layout .auth-google-btn,
+  .onboarding-layout .auth-google-btn {
+    border-color: var(--auth-border) !important;
+    background: #ffffff !important;
+    color: var(--auth-ink) !important;
+    border-radius: var(--auth-radius-button) !important;
+    text-transform: none;
+  }
+
+  .auth-layout .auth-text-link.v-btn,
+  .onboarding-layout .auth-text-link.v-btn {
+    color: var(--auth-link) !important;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .welcome-get-started.v-btn {
+    @apply shadow-none;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .welcome-get-started.v-btn:hover {
+    @apply opacity-95;
+  }
+
+  .welcome-sign-in.v-btn {
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .welcome-sign-in.v-btn .v-btn__overlay {
+    @apply opacity-0;
+  }
+
+  .side-nav-item.v-list-item {
+    min-height: 36px;
+  }
+
+  .side-nav-item--inactive.v-list-item .v-list-item-title {
+    color: #ababb7 !important;
+  }
+
+  .side-nav-item--inactive.v-list-item .v-icon {
+    color: #ababb7;
+    opacity: 1;
+  }
+
+  .side-nav-item.v-list-item--active {
+    background-color: color-mix(in srgb, var(--foreground) 6%, transparent);
+    color: var(--foreground);
+  }
+
+  .lead-filter-tabs {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lead-filter-tabs .v-slide-group__content {
+    gap: 20px;
+  }
+
+  .lead-filter-tabs__tab.v-tab {
+    min-width: 0;
+    padding-inline: 0;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ababb7;
+  }
+
+  .lead-filter-tabs__tab.v-tab--selected {
+    color: var(--foreground);
+  }
+
+  .lead-filter-tabs .v-tab__slider {
+    height: 2px;
+    border-radius: 0;
+  }
+
+  .lead-list.v-list {
+    padding-block: 0;
+  }
+
+  .lead-row.v-list-item {
+    min-height: 0;
+    margin-bottom: 0.7rem;
+    padding-inline: 0;
+    padding-block: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .lead-list .v-list-item:first-child.lead-row {
+    border-top: none;
+  }
+
+  .lead-row.v-list-item .v-list-item__prepend {
+    align-self: flex-start;
+    padding-top: 2px;
+  }
+
+  .lead-row__title.v-list-item-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: inherit;
+    line-height: 1.35;
+    white-space: normal;
+    opacity: 1;
+  }
+
+  .lead-row__subtitle.v-list-item-subtitle {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: #ababb7;
+    opacity: 1;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .lead-row--inactive.v-list-item .v-list-item-title,
+  .lead-row--inactive.v-list-item .v-icon {
+    color: #ababb7;
+  }
+
+  .lead-row.v-list-item .v-list-item__overlay {
+    opacity: 0;
+  }
+
+  .lead-row.v-list-item:hover .v-list-item__overlay {
+    opacity: 0.04;
+  }
+
+  .site-manage-jobs-list.v-list {
+    padding-block: 0;
+  }
+
+  .site-manage-jobs-row.v-list-item {
+    min-height: 0;
+    margin-bottom: 0.7rem;
+    padding-inline: 0;
+    padding-block: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .site-manage-jobs-list .v-list-item:first-child.site-manage-jobs-row {
+    border-top: none;
+  }
+
+  .site-manage-jobs-row.v-list-item .v-list-item__prepend {
+    align-self: flex-start;
+    padding-top: 2px;
+  }
+
+  .site-manage-jobs-row.v-list-item .v-list-item__prepend > .v-list-item__spacer {
+    width: 14px;
+  }
+
+  .site-manage-jobs-row__title.v-list-item-title {
+    font-size: inherit;
+    line-height: 1.35;
+    white-space: normal;
+    opacity: 1;
+  }
+
+  .site-manage-jobs-row__subtitle.v-list-item-subtitle {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: #ababb7;
+    opacity: 1;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .site-manage-jobs-row--hidden.v-list-item .v-list-item-title {
+    color: #ababb7;
+  }
+
+  .site-manage-jobs-row.v-list-item .v-list-item__overlay {
+    opacity: 0;
+  }
+
+  .site-manage-jobs-row.v-list-item:hover .v-list-item__overlay {
+    opacity: 0.04;
+  }
+
+  .bottom-nav-action svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+  }
+}

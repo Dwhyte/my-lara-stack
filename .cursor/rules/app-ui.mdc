@@ -1,31 +1,31 @@
 ---
-description: Non-negotiables for building app UI — shadcn-vue-first, design tokens, no hardcoded colors
+description: Non-negotiables for building app UI — Vuetify-first, design tokens, no hardcoded colors
 globs: "resources/js/**/*.{vue,ts}"
 alwaysApply: true
 ---
 
 # App UI non-negotiables
 
-These are the always-on rules. For the full how-to (spacing scale, typography, icons, MCP workflow), the **`app-ui` skill** carries the detail — activate it whenever you build or restyle UI.
+These are the always-on rules. For the full how-to (spacing scale, typography, icons), the **`app-ui` skill** carries the detail — activate it whenever you build or restyle UI.
 
-## shadcn-vue-first
+## Vuetify-first
 
-- Always reach for a shadcn-vue component from `@/components/ui/*` before hand-rolling markup. Compose with variants and sub-components (`CardHeader`, `DialogTitle`, etc.).
-- Add missing primitives with `pnpm dlx shadcn-vue@latest add <name>` — don't copy-paste component source from docs.
-- Build bespoke markup only when no shadcn-vue primitive fits. Say so in your reasoning when you do.
-- For generic shadcn-vue composition rules (forms, overlays, gap vs space-y), follow the **`shadcn-vue` skill** — do not duplicate them here.
+- Always reach for a Vuetify component (`v-btn`, `v-card`, `v-dialog`, `v-text-field`, etc.) before hand-rolling markup.
+- Use `vuetify-inertia-link` / `to` props for in-app navigation inside Vuetify components.
+- Compose with Vouch surface classes (`surface-raised`, `surface-chrome-*`) and token utilities.
+- Build bespoke markup only when no Vuetify primitive fits.
 
 ## Design tokens, never raw color
 
 - Never hardcode hex/rgb/oklch in components. Use semantic tokens: `bg-primary`, `text-muted-foreground`, `border-border`, `bg-muted`, `text-destructive`, etc.
-- The token registry is `resources/css/app.css` (`:root`, `.dark`, `@theme inline`). Brand intent lives in `.ai/design/brand.md`.
-- Add new colors in `app.css` before using them in Vue SFCs.
+- The token registry is `resources/css/tokens/` (`shadcn-vars.css`, `tokens.css`). Brand intent lives in `.ai/design/brand.md`.
+- Vuetify theme colors bridge from CSS vars via `resources/js/theme/tokens.ts`.
 
 ## Reuse before creating
 
 - Check `resources/js/pages`, `resources/js/components`, and sibling feature files for an existing pattern before writing a new one.
-- Use full Card/Dialog/Form composition — see **`DemoA.vue`** / **`DemoB.vue`** and the **`app-ui` skill** `rules/spacing-layout.md`.
+- Use full shell/layout composition — see **`DemoA.vue`** / **`DemoB.vue`** and `layouts/app.vue`.
 
-## Verify APIs
+## Icons
 
-- Confirm shadcn-vue component APIs with `pnpm dlx shadcn-vue@latest docs <component>` before writing them — do not guess props or sub-component names.
+- Use Iconify with Lucide collection: `<v-icon icon="lucide:..." />` or `IconifyIcon`.

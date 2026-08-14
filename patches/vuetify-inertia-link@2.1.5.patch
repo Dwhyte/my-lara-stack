@@ -1,0 +1,148 @@
+diff --git a/index.js b/index.js
+index 1551ab324b28cf8c7c6dfad2ae8fbd48ddaab27d..4c9e84a15704027d585618e4a133e1fa4cf0697e 100644
+--- a/index.js
++++ b/index.js
+@@ -1,5 +1,6 @@
++import { config, shouldIntercept } from "@inertiajs/core";
+ import { router, usePage } from "@inertiajs/vue3";
+-import { computed } from "vue";
++import { computed, onMounted, onUnmounted, ref } from "vue";
+ 
+ const VuetifyInertiaLink = {
+     install(app) {
+@@ -7,19 +8,126 @@ const VuetifyInertiaLink = {
+             useLink(props) {
+                 const href = props.to.value;
+                 const currentUrl = computed(() => usePage().url);
++                const hoverTimeout = ref(null);
++
++                const prefetchModes = computed(() => {
++                    const prefetchProp = props.prefetch?.value ?? false;
++                    if (prefetchProp === true) {
++                        return ["hover"];
++                    }
++                    if (prefetchProp === false) {
++                        return [];
++                    }
++                    if (Array.isArray(prefetchProp)) {
++                        return prefetchProp;
++                    }
++                    return [prefetchProp];
++                });
++
++                const cacheForValue = computed(() => {
++                    const cacheForProp = props.cacheFor?.value;
++                    if (cacheForProp !== undefined && cacheForProp !== 0) {
++                        return cacheForProp;
++                    }
++                    if (
++                        prefetchModes.value.length === 1 &&
++                        prefetchModes.value[0] === "click"
++                    ) {
++                        return 0;
++                    }
++                    return config.get("prefetch.cacheFor");
++                });
++
++                const doPrefetch = () => {
++                    router.prefetch(
++                        href,
++                        {},
++                        {
++                            cacheFor: cacheForValue.value,
++                        },
++                    );
++                };
++
++                const regularEvents = {
++                    onClick: (event) => {
++                        if (shouldIntercept(event)) {
++                            event.preventDefault();
++                            router.visit(href);
++                        }
++                    },
++                };
++
++                const prefetchHoverEvents = {
++                    onMouseenter: () => {
++                        hoverTimeout.value = setTimeout(() => {
++                            doPrefetch();
++                        }, config.get("prefetch.hoverDelay"));
++                    },
++                    onMouseleave: () => {
++                        if (hoverTimeout.value) {
++                            clearTimeout(hoverTimeout.value);
++                            hoverTimeout.value = null;
++                        }
++                    },
++                    onClick: regularEvents.onClick,
++                };
++
++                const prefetchClickEvents = {
++                    onMousedown: (event) => {
++                        if (shouldIntercept(event)) {
++                            event.preventDefault();
++                            doPrefetch();
++                        }
++                    },
++                    onMouseup: (event) => {
++                        if (shouldIntercept(event)) {
++                            event.preventDefault();
++                            router.visit(href);
++                        }
++                    },
++                    onClick: (event) => {
++                        if (shouldIntercept(event)) {
++                            event.preventDefault();
++                        }
++                    },
++                };
++
++                onMounted(() => {
++                    if (prefetchModes.value.includes("mount")) {
++                        doPrefetch();
++                    }
++                });
++
++                onUnmounted(() => {
++                    if (hoverTimeout.value) {
++                        clearTimeout(hoverTimeout.value);
++                    }
++                });
++
++                const eventHandlers = (() => {
++                    if (prefetchModes.value.includes("hover")) {
++                        return prefetchHoverEvents;
++                    }
++                    if (prefetchModes.value.includes("click")) {
++                        return prefetchClickEvents;
++                    }
++                    return regularEvents;
++                })();
++
+                 return {
+                     route: computed(() => ({ href })),
+-                    isActive: computed(() => currentUrl.value.startsWith(href)),
+-                    isExactActive: computed(() => href === currentUrl),
+-                    navigate(e) {
+-                        if (e.shiftKey || e.metaKey || e.ctrlKey) return;
+-                        e.preventDefault();
+-                        router.visit(href);
+-                    }
++                    isActive: computed(() =>
++                        currentUrl.value.startsWith(href),
++                    ),
++                    isExactActive: computed(
++                        () => href === currentUrl.value,
++                    ),
++                    navigate: eventHandlers.onClick,
++                    ...eventHandlers,
+                 };
+-            }
++            },
+         });
+-    }
++    },
+ };
+ 
+ export default VuetifyInertiaLink;

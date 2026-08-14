@@ -1,16 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
-import { ArrowLeft, CircleCheck, Server } from '@lucide/vue';
-
 import { demoA } from '@/actions/App/Http/Controllers/DemoController';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import AppLayout from '@/layouts/AppLayout.vue';
 import type { AppSharedProps } from '@/types/inertia';
-
-defineOptions({
-    layout: AppLayout,
-});
 
 type DemoBProps = AppSharedProps & {
     message?: string;
@@ -21,35 +11,35 @@ defineProps<DemoBProps>();
 </script>
 
 <template>
-    <Head title="Demo B" />
-
-    <div class="flex min-h-screen items-center justify-center bg-background p-8">
+    <div class="flex min-h-full items-center justify-center p-4 md:p-8">
         <div class="w-full max-w-2xl space-y-8">
             <div class="space-y-3 text-center">
                 <div
                     class="inline-flex items-center gap-2 rounded-lg bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-700 dark:text-emerald-400"
                 >
-                    <CircleCheck class="size-3.5" />
+                    <v-icon icon="lucide:circle-check" size="14" />
                     Navigation successful
                 </div>
-                <h1 class="text-4xl font-bold tracking-tight text-foreground">Demo Page B</h1>
-                <p class="text-lg text-muted-foreground">You navigated here from Demo A via Inertia.js client-side routing.</p>
+                <h1 class="font-display text-4xl font-bold tracking-tight text-foreground">Demo Page B</h1>
+                <p class="text-lg text-muted-foreground">
+                    You navigated here from Demo A via Inertia.js client-side routing.
+                </p>
             </div>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle class="flex items-center gap-2">
-                        <Server class="size-5" />
-                        Server-Provided Props
-                    </CardTitle>
-                    <CardDescription> Data passed from the Laravel controller to this Vue component </CardDescription>
-                </CardHeader>
+            <v-card class="surface-raised">
+                <v-card-title class="flex items-center gap-2 pt-6 text-lg font-semibold">
+                    <v-icon icon="lucide:server" size="20" />
+                    Server-Provided Props
+                </v-card-title>
+                <v-card-subtitle class="pb-2">
+                    Data passed from the Laravel controller to this Vue component
+                </v-card-subtitle>
 
-                <CardContent class="flex flex-col gap-4">
+                <v-card-text class="flex flex-col gap-4">
                     <div class="flex flex-col gap-2 rounded-lg bg-muted p-4 font-mono text-sm">
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="text-muted-foreground">message:</span>
-                            <span class="text-foreground"> "{{ message ?? 'Hello from Laravel!' }}" </span>
+                            <span class="text-foreground">"{{ message ?? 'Hello from Laravel!' }}"</span>
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="text-muted-foreground">timestamp:</span>
@@ -58,22 +48,27 @@ defineProps<DemoBProps>();
                     </div>
                     <p class="text-sm text-muted-foreground">
                         These values were assigned as props by the Laravel controller using
-                        <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-xs"> Inertia::render() </code>
-                        .
+                        <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">Inertia::render()</code>.
                     </p>
-                </CardContent>
+                </v-card-text>
 
-                <CardFooter>
-                    <Button as-child class="group w-full" size="lg" variant="outline">
-                        <Link :href="demoA.url()">
-                            <ArrowLeft class="mr-1 size-4 transition-transform group-hover:-translate-x-1" />
-                            Back to Demo Page A
-                        </Link>
-                    </Button>
-                </CardFooter>
-            </Card>
+                <v-card-actions class="px-4 pb-6">
+                    <v-btn
+                        :to="demoA.url()"
+                        variant="outlined"
+                        rounded="lg"
+                        size="large"
+                        block
+                    >
+                        <v-icon icon="lucide:arrow-left" start size="18" />
+                        Back to Demo Page A
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
 
-            <p class="text-center text-xs text-muted-foreground">Navigate back — Inertia preserves scroll position and handles history</p>
+            <p class="text-center text-xs text-muted-foreground">
+                Navigate back — Inertia preserves scroll position and handles history
+            </p>
         </div>
     </div>
 </template>

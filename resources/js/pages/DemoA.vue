@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
-import { ArrowRight, Bell, Layers, Zap } from '@lucide/vue';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { toast } from 'vue-sonner';
 
 import { demoB } from '@/actions/App/Http/Controllers/DemoController';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
 import { useAppearance } from '@/composables/use-appearance';
-import AppLayout from '@/layouts/AppLayout.vue';
+import { useSnackbar } from '@/composables/useSnackbar';
 import { useDemoStore } from '@/stores/use-demo-store';
+import type { AppSharedProps } from '@/types/inertia';
 
-defineOptions({
-    layout: AppLayout,
-});
+type DemoAProps = AppSharedProps;
+
+defineProps<DemoAProps>();
 
 const stackItems = [
     {
@@ -39,12 +34,12 @@ const stackItems = [
         description: 'Utility-first layout and styling',
     },
     {
-        label: 'shadcn-vue',
-        description: 'Accessible, composable UI components built on Reka UI',
+        label: 'Vuetify 4',
+        description: 'Material Design components with Vouch token styling',
     },
     {
-        label: 'Lucide',
-        description: 'Consistent icon set for Vue components',
+        label: 'Iconify',
+        description: 'Consistent icon set via Lucide collection',
     },
     {
         label: 'Pinia',
@@ -57,47 +52,49 @@ const isDarkMode = computed(() => resolvedAppearance.value === 'dark');
 
 const demoStore = useDemoStore();
 const { toastCount } = storeToRefs(demoStore);
+const { showSnackbar } = useSnackbar();
 
-const showToast = () => {
+const showToast = (): void => {
     demoStore.incrementToastCount();
-    toast.success('Toast fired from Sonner', {
-        description: `This is toast #${toastCount.value}, counted in a Pinia store.`,
-    });
+    showSnackbar(`Toast #${toastCount.value} from the Vuetify snackbar pattern.`, 'success');
 };
 </script>
 
 <template>
-    <Head title="Demo A" />
-
-    <div class="flex min-h-screen items-center justify-center bg-background p-8">
+    <div class="flex min-h-full items-center justify-center p-4 md:p-8">
         <div class="w-full max-w-2xl space-y-8">
             <div class="space-y-3 text-center">
                 <div class="flex items-center justify-center gap-3">
-                    <Switch
+                    <v-switch
                         :model-value="isDarkMode"
+                        hide-details
+                        density="compact"
+                        color="primary"
                         aria-label="Toggle light and dark mode"
-                        @update:model-value="(enabled: boolean) => updateAppearance(enabled ? 'dark' : 'light')"
+                        @update:model-value="(enabled: boolean | null) => updateAppearance(enabled ? 'dark' : 'light')"
                     />
                     <span class="text-sm text-muted-foreground">Light/Dark</span>
                 </div>
-                <div class="inline-flex items-center gap-2 rounded-lg bg-muted px-4 py-1.5 text-sm font-medium text-foreground">
-                    <Zap class="size-3.5" />
-                    Vite + Inertia + Tailwind + shadcn-vue
+                <div
+                    class="inline-flex items-center gap-2 rounded-lg bg-muted px-4 py-1.5 text-sm font-medium text-foreground"
+                >
+                    <v-icon icon="lucide:zap" size="14" />
+                    Vite + Inertia + Tailwind + Vuetify
                 </div>
-                <h1 class="text-4xl font-bold tracking-tight text-foreground">Demo Page A</h1>
-                <p class="text-lg text-muted-foreground">This page is rendered by Vue via Inertia.js, served by Laravel.</p>
+                <h1 class="font-display text-4xl font-bold tracking-tight text-foreground">Demo Page A</h1>
+                <p class="text-lg text-muted-foreground">
+                    This page is rendered by Vue via Inertia.js, served by Laravel.
+                </p>
             </div>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle class="flex items-center gap-2">
-                        <Layers class="size-5" />
-                        Stack Overview
-                    </CardTitle>
-                    <CardDescription>The technology powering this page</CardDescription>
-                </CardHeader>
+            <v-card class="surface-raised">
+                <v-card-title class="flex items-center gap-2 pt-6 text-lg font-semibold">
+                    <v-icon icon="lucide:layers" size="20" />
+                    Stack Overview
+                </v-card-title>
+                <v-card-subtitle class="pb-2">The technology powering this page</v-card-subtitle>
 
-                <CardContent>
+                <v-card-text>
                     <ul class="flex flex-col gap-3">
                         <li v-for="item in stackItems" :key="item.label" class="flex items-start gap-3">
                             <span class="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-lg bg-muted">
@@ -109,24 +106,38 @@ const showToast = () => {
                             </span>
                         </li>
                     </ul>
-                </CardContent>
+                </v-card-text>
 
-                <CardFooter class="flex-col gap-2">
-                    <Button type="button" class="w-full" size="lg" variant="outline" @click="showToast">
-                        <Bell class="mr-1 size-4" />
-                        Show a toast
-                        <span v-if="toastCount > 0" class="ml-1 text-muted-foreground"> ({{ toastCount }}) </span>
-                    </Button>
-                    <Button as-child class="group w-full" size="lg" variant="secondary">
-                        <Link :href="demoB.url()">
-                            Go to Demo Page B
-                            <ArrowRight class="ml-1 size-4 transition-transform group-hover:translate-x-1" />
-                        </Link>
-                    </Button>
-                </CardFooter>
-            </Card>
+                <v-card-actions class="flex-col gap-2 px-4 pb-6">
+                    <v-btn
+                        variant="outlined"
+                        rounded="lg"
+                        size="large"
+                        block
+                        class="shadow-brand"
+                        @click="showToast"
+                    >
+                        <v-icon icon="lucide:bell" start size="18" />
+                        Show a snackbar
+                        <span v-if="toastCount > 0" class="ml-1 text-muted-foreground">({{ toastCount }})</span>
+                    </v-btn>
+                    <v-btn
+                        :to="demoB.url()"
+                        color="primary"
+                        rounded="lg"
+                        size="large"
+                        block
+                        class="shadow-brand"
+                    >
+                        Go to Demo Page B
+                        <v-icon icon="lucide:arrow-right" end size="18" />
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
 
-            <p class="text-center text-xs text-muted-foreground">Navigation is handled client-side by Inertia.js — no full page reload</p>
+            <p class="text-center text-xs text-muted-foreground">
+                Navigation is handled client-side by Inertia.js — no full page reload
+            </p>
         </div>
     </div>
 </template>

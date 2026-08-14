@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
 import { demoB } from '@/actions/App/Http/Controllers/DemoController';
+import AppActionButton from '@/components/AppActionButton.vue';
 import { useAppearance } from '@/composables/use-appearance';
 import { useSnackbar } from '@/composables/useSnackbar';
 import { useDemoStore } from '@/stores/use-demo-store';
@@ -70,21 +71,21 @@ const showToast = (): void => {
                         hide-details
                         density="compact"
                         color="primary"
+                        inset
+                        size="small"
+                        true-icon="lucide:moon"
+                        false-icon="lucide:sun"
                         aria-label="Toggle light and dark mode"
                         @update:model-value="(enabled: boolean | null) => updateAppearance(enabled ? 'dark' : 'light')"
                     />
-                    <span class="text-sm text-muted-foreground">Light/Dark</span>
+                    <span class="text-muted-foreground text-sm">Light/Dark</span>
                 </div>
-                <div
-                    class="inline-flex items-center gap-2 rounded-lg bg-muted px-4 py-1.5 text-sm font-medium text-foreground"
-                >
+                <div class="bg-muted text-foreground inline-flex items-center gap-2 rounded-lg px-4 py-1.5 text-sm font-medium">
                     <v-icon icon="lucide:zap" size="14" />
                     Vite + Inertia + Tailwind + Vuetify
                 </div>
-                <h1 class="font-display text-4xl font-bold tracking-tight text-foreground">Demo Page A</h1>
-                <p class="text-lg text-muted-foreground">
-                    This page is rendered by Vue via Inertia.js, served by Laravel.
-                </p>
+                <h1 class="font-display text-foreground text-4xl font-bold tracking-tight">Demo Page A</h1>
+                <p class="text-muted-foreground text-lg">This page is rendered by Vue via Inertia.js, served by Laravel.</p>
             </div>
 
             <v-card class="surface-raised">
@@ -97,10 +98,10 @@ const showToast = (): void => {
                 <v-card-text>
                     <ul class="flex flex-col gap-3">
                         <li v-for="item in stackItems" :key="item.label" class="flex items-start gap-3">
-                            <span class="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-lg bg-muted">
-                                <span class="size-2 rounded-lg bg-foreground" />
+                            <span class="bg-muted mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-lg">
+                                <span class="bg-foreground size-2 rounded-lg" />
                             </span>
-                            <span class="text-sm text-muted-foreground">
+                            <span class="text-muted-foreground text-sm">
                                 <strong class="text-foreground">{{ item.label }}</strong>
                                 — {{ item.description }}
                             </span>
@@ -109,35 +110,19 @@ const showToast = (): void => {
                 </v-card-text>
 
                 <v-card-actions class="flex-col gap-2 px-4 pb-6">
-                    <v-btn
-                        variant="outlined"
-                        rounded="lg"
-                        size="large"
-                        block
-                        class="shadow-brand"
-                        @click="showToast"
-                    >
+                    <v-btn variant="outlined" rounded="lg" size="large" block @click="showToast">
                         <v-icon icon="lucide:bell" start size="18" />
                         Show a snackbar
-                        <span v-if="toastCount > 0" class="ml-1 text-muted-foreground">({{ toastCount }})</span>
+                        <span v-if="toastCount > 0" class="text-muted-foreground ml-1">({{ toastCount }})</span>
                     </v-btn>
-                    <v-btn
-                        :to="demoB.url()"
-                        color="primary"
-                        rounded="lg"
-                        size="large"
-                        block
-                        class="shadow-brand"
-                    >
+                    <AppActionButton :to="demoB.url()" block>
                         Go to Demo Page B
                         <v-icon icon="lucide:arrow-right" end size="18" />
-                    </v-btn>
+                    </AppActionButton>
                 </v-card-actions>
             </v-card>
 
-            <p class="text-center text-xs text-muted-foreground">
-                Navigation is handled client-side by Inertia.js — no full page reload
-            </p>
+            <p class="text-muted-foreground text-center text-xs">Navigation is handled client-side by Inertia.js — no full page reload</p>
         </div>
     </div>
 </template>

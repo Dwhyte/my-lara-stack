@@ -15,9 +15,9 @@ return new class extends AiMigration
         $messagesTable = config('ai.conversations.tables.messages', 'agent_conversation_messages');
 
         Schema::create($conversationsTable, function (Blueprint $table) {
-            $table->string('id', 36)->primary();
+            $table->uuid('id')->primary();
             $table->string('participant_type')->nullable();
-            $table->unsignedBigInteger('participant_id')->nullable();
+            $table->uuid('participant_id')->nullable();
             $table->string('title');
             $table->timestamps();
 
@@ -25,10 +25,10 @@ return new class extends AiMigration
         });
 
         Schema::create($messagesTable, function (Blueprint $table) {
-            $table->string('id', 36)->primary();
-            $table->string('conversation_id', 36)->index();
+            $table->uuid('id')->primary();
+            $table->uuid('conversation_id')->index();
             $table->string('participant_type')->nullable();
-            $table->unsignedBigInteger('participant_id')->nullable();
+            $table->uuid('participant_id')->nullable();
             $table->string('agent');
             $table->string('role', 25);
             $table->text('content');

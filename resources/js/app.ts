@@ -3,6 +3,8 @@ import '../css/main.css';
 import '../css/vuetify-overrides.css';
 import 'vuetify/styles';
 
+import './echo';
+
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createPinia } from 'pinia';

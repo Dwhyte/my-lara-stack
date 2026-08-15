@@ -52,8 +52,11 @@ class AppServiceProvider extends ServiceProvider
             return;
         }
 
+        DevCommands::except('server');
         DevCommands::tabs();
         DevCommands::withTimestamps();
+
+        DevCommands::artisan('reverb:start --debug', 'reverb')->purple();
     }
 
     protected function configureHead(): void

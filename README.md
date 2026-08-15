@@ -25,6 +25,7 @@ A production-ready **Laravel** + **Inertia.js** + **Vue 3** starter kit: **Tailw
 | **Design tokens** | OKLCH CSS variables in `resources/css/app.css`; brand reference in `.ai/design/brand.md` |
 | **Dark / light mode** | `useAppearance` toggles `.dark` on `<html>`; shadcn-vue semantic tokens flip automatically |
 | **Laravel Fortify** | Auth scaffolding (login, registration, 2FA, email verification, etc.) |
+| **Laravel Reverb + Echo** | Realtime WebSocket foundation (wired at bootstrap) |
 | **Pest v4** | Feature, unit, and browser tests (Playwright) |
 | **Laravel Pint** | PHP code style (`composer run lint`) |
 | **Laravel Pail** | Log tailing (optional; `composer run dev` stack) |
@@ -62,24 +63,37 @@ When you add new AI-specific config, prefer **documenting the workflow** in `AGE
 1. Clone **your** copy of the repository (`git clone …`) and enter the project directory.
 2. Install PHP dependencies: `composer install`
 3. Copy environment file: `cp .env.example .env` — then `php artisan key:generate`
-4. Create the app database (SQLite or MySQL/Postgres) and run `php artisan migrate`
-5. Install JS dependencies: `pnpm install`
-6. Generate Wayfinder bindings: `php artisan wayfinder:generate`
-7. Start the Vite dev server: `pnpm dev`
+4. `php artisan reverb:install` — generates `REVERB_APP_KEY` / `REVERB_APP_SECRET` and sets `BROADCAST_CONNECTION=reverb`
+5. Create the app database (SQLite or MySQL/Postgres) and run `php artisan migrate`
+6. Install JS dependencies: `pnpm install`
+7. Generate Wayfinder bindings: `php artisan wayfinder:generate`
 
-Serve the app with **Herd** (recommended): link or park the project so it is available at a `*.test` domain (for example `https://my-lara-stack.test`). Vite runs separately for HMR.
+**HTTP** is served by [Herd](https://herd.laravel.com/) at a `*.test` domain (for example `https://my-lara-stack.test`). Link or park the project in Herd; do not use `php artisan serve`.
 
-Optional all-in-one (uses `php artisan serve` instead of Herd):
+**Background processes** (queue, logs, Vite, Reverb) run together via:
 
 ```bash
-composer run dev
+composer dev
 ```
+
+This starts four tabbed processes — no `server` tab:
+
+| Process | Command |
+| -------- | -------- |
+| queue | `php artisan queue:listen --tries=1` |
+| logs | `php artisan pail` |
+| vite | `pnpm run dev` |
+| reverb | `php artisan reverb:start --debug` |
+
+List registered processes: `php artisan dev:list`.
 
 Fresh setup in one command:
 
 ```bash
 composer run setup
 ```
+
+Then run `php artisan reverb:install` if you used `composer run setup` before generating Reverb credentials.
 
 ## Demo pages
 
@@ -190,6 +204,7 @@ After changing routes or controller method signatures, run `php artisan wayfinde
 | `composer run lint` | Laravel Pint (PHP style) |
 | `composer run ci:check` | Frontend checks + tests |
 | `composer run setup` | Install deps, migrate, build assets |
+| `composer dev` | Queue, Pail, Vite, Reverb (Herd serves HTTP) |
 | `php artisan boost:update` | Refresh Boost / AI guidance data (also runs on `composer update`) |
 | `pnpm dlx shadcn-vue@latest add <name>` | Add shadcn-vue components |
 
@@ -197,6 +212,7 @@ After changing routes or controller method signatures, run `php artisan wayfinde
 
 - [Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) (GitHub)
 - [Laravel](https://laravel.com/docs)
+- [Laravel Reverb](https://reverb.laravel.com/)
 - [Laravel Boost](https://github.com/laravel/boost)
 - [Inertia.js](https://inertiajs.com/)
 - [Vue](https://vuejs.org/)

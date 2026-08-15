@@ -563,31 +563,9 @@ The server must use `Inertia::scroll()` to configure the paginated data. Use the
 
 Server-side patterns (Inertia::render, props, middleware) are covered in inertia-laravel guidelines.
 
-## Document Head (Laravel Head)
-
-This app uses `laravel/head` with Inertia `serverHead: true` in `resources/js/app.ts`. Do not use the Inertia `<Head>` component or a `title` callback in `createInertiaApp()`.
-
-Set metadata on the server:
-
-```php
-// Static pages — route metadata
-Route::get('/contact', fn () => Inertia::render('Contact'))
-    ->withHead(title: 'Contact', description: 'Get in touch.');
-
-// Dynamic pages — controller
-use Laravel\Head\Facades\Head;
-
-Head::title($post->title)->description($post->excerpt);
-
-return Inertia::render('Posts/Show', ['post' => $post]);
-```
-
-Site defaults and static globals (viewport, favicons) live in `AppServiceProvider` via `Head::defaults()` and `Head::inertiaGlobals()`. The Blade layout renders resolved tags with `@head`.
-
 ## Common Pitfalls
 
 - Using traditional `<a>` links instead of Inertia's `<Link>` component (breaks SPA behavior)
-- Using Inertia `<Head>` or client-side title callbacks when Laravel Head manages the document head
 - Forgetting that Vue components must have a single root element
 - Forgetting to add loading states (skeleton screens) when using deferred props
 - Not handling the `undefined` state of deferred props before data loads

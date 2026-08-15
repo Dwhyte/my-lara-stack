@@ -16,19 +16,35 @@ const isDesktop = computed(() => display.mdAndUp.value);
 
 type BottomNavAction =
     | { id: string; label: string; icon: string; kind: 'menu' | 'create' }
-    | { id: string; label: string; icon: string; kind: 'link'; to: string };
+    | { id: string; label: string; icon: string; kind: 'link' | 'home'; to: string };
 
-const actions = computed<BottomNavAction[]>(() => [
-    { id: 'menu', label: 'Menu', icon: 'lucide:menu', kind: 'menu' },
-    ...appBottomNavTabs.map((tab) => ({
-        id: tab.id,
-        label: tab.label,
-        icon: tab.icon,
-        kind: 'link' as const,
-        to: tab.to,
-    })),
-    { id: 'new', label: 'New', icon: 'lucide:plus', kind: 'create' },
-]);
+const actions = computed<BottomNavAction[]>(() => {
+    const firstAction: BottomNavAction = isDesktop.value
+        ? {
+              id: 'home',
+              label: 'Home',
+              icon: 'solar:home-outline',
+              kind: 'home',
+              to: '/demo/a',
+          }
+        : { id: 'menu', label: 'Menu', icon: 'lucide:menu', kind: 'menu' };
+
+    return [
+        firstAction,
+        ...appBottomNavTabs.map((tab) => ({
+            id: tab.id,
+            label: tab.label,
+            icon: tab.icon,
+            kind: 'link' as const,
+            to: tab.to,
+        })),
+        { id: 'new', label: 'New', icon: 'lucide:plus', kind: 'create' },
+    ];
+});
+
+function isLinkAction(action: BottomNavAction): action is Extract<BottomNavAction, { kind: 'link' | 'home' }> {
+    return action.kind === 'link' || action.kind === 'home';
+}
 
 function actionClasses(): string {
     return 'bottom-nav-action shrink-0 text-white';
@@ -55,19 +71,14 @@ function onAction(action: BottomNavAction): void {
     >
         <div
             data-floating-container-inner
-            class="bottom-nav-pill pointer-events-auto relative rounded-[14px] bg-shell-ink px-1.5 py-1.5 shadow-[0_12px_30px_rgba(10,10,11,0.45)]"
+            class="bottom-nav-pill bg-shell-ink pointer-events-auto relative rounded-[14px] px-1.5 py-1.5 shadow-[0_12px_30px_rgba(10,10,11,0.45)]"
         >
             <div class="bottom-nav-layer flex items-center gap-1.5 opacity-100">
                 <template v-for="action in actions" :key="action.id">
-                    <v-tooltip
-                        location="top"
-                        content-class="app-ui-tooltip"
-                        :disabled="!isDesktop"
-                        :open-delay="350"
-                    >
+                    <v-tooltip location="top" content-class="app-ui-tooltip" :disabled="!isDesktop" :open-delay="350">
                         <template #activator="{ props: tooltipProps }">
                             <v-btn
-                                v-if="action.kind === 'link'"
+                                v-if="isLinkAction(action)"
                                 v-bind="tooltipProps"
                                 :to="action.to"
                                 :icon="action.icon"

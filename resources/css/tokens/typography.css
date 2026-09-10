@@ -1,0 +1,14 @@
+:root {
+    --app-field-min-height: 38px;
+    --app-field-font-size: 13px;
+    --app-field-menu-item-min-height: 28px;
+}
+
+@theme inline {
+    --text-body-sm: 0.758rem;
+    --text-body-sm--line-height: 1.35;
+
+    --app-field-min-height: 38px;
+    --app-field-font-size: 13px;
+    --app-field-menu-item-min-height: 28px;
+}

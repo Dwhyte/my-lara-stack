@@ -1,22 +1,24 @@
-# shadcn-vue-first
+# shadcn-first
 
-This app is a Vue + shadcn-vue + Tailwind stack. The default move is **use a shadcn-vue component and compose it**, not build styled markup from scratch.
+This app is a React + shadcn/ui + Tailwind stack. The default move is **use a shadcn component and compose it**, not build styled markup from scratch.
 
 ## Decision tree
 
-1. Is there a shadcn-vue component for this? (`Button`, `Card`, `Dialog`, `Sheet`, `Tabs`, `Select`, `Input`, `Badge`, `Alert`, `Skeleton`, …) → use it from `@/components/ui/*`.
-2. Component not installed? → `pnpm dlx shadcn-vue@latest add <name>`, then compose.
+1. Is there a shadcn component for this? (`Button`, `Card`, `Dialog`, `Drawer`, `Select`, `Input`, `Field`, `Badge`, `Switch`, `Tooltip`, …) → use it from `@/components/ui/*`.
+2. Component not installed? → `pnpm dlx shadcn@latest add <name>`, then restyle the generated file to match existing primitives (32px muted fields, `rounded-lg` buttons, ink tooltips).
 3. Need a project-specific look? Apply token utilities + Tailwind **for layout** on the primitive. Prefer built-in `variant` and `size` props before custom classes.
 4. Does no primitive fit the design? → build minimal markup with tokens + Tailwind, and note why in your reasoning.
 
-Avoid recreating things shadcn-vue already gives you (dialogs, dropdowns, toasts, form fields, tabs, tooltips).
+Avoid recreating things shadcn already gives you (dialogs, drawers, toasts, form fields, tooltips).
 
 ## Respect component defaults
 
-shadcn-vue components ship with variants and styling via CSS variables. Don't repeat or fight defaults:
+shadcn components ship with variants and styling via CSS variables. Don't repeat or fight defaults:
 
-```vue
-<Button variant="outline" size="lg">Cancel</Button>
+```tsx
+<Button variant="outline" size="lg">
+    Cancel
+</Button>
 ```
 
 If a new app-wide default emerges, prefer editing the component in `resources/js/components/ui/` once rather than repeating props on every call site.
@@ -25,33 +27,41 @@ If a new app-wide default emerges, prefer editing the component in `resources/js
 
 Use the full component API — don't flatten structure:
 
-```vue
+```tsx
 <Card>
-  <CardHeader>
-    <CardTitle>Title</CardTitle>
-    <CardDescription>Subtitle</CardDescription>
-  </CardHeader>
-  <CardContent><!-- body --></CardContent>
-  <CardFooter><!-- actions --></CardFooter>
+    <CardHeader>
+        <CardTitle>Title</CardTitle>
+        <CardDescription>Subtitle</CardDescription>
+    </CardHeader>
+    <CardContent>{/* body */}</CardContent>
+    <CardFooter>{/* actions */}</CardFooter>
 </Card>
 ```
 
-See **`DemoA.vue`** and **`DemoB.vue`** for page-level card patterns.
+See **`DemoA.tsx`** and **`DemoB.tsx`** for page-level card patterns.
 
-## Inertia navigation (no Vue Router)
+## Inertia navigation
 
-- In-app links: `<Link :href="route.url()">` from `@inertiajs/vue3`
-- Styled as a button: `<Button as-child><Link :href="...">Label</Link></Button>`
-- Never wrap `<button>` inside `<Link>` without `as-child` (invalid nesting)
+- In-app links: `<Link href={route.url()}>` from `@inertiajs/react`
+- Styled as a button: `<Button asChild><Link href={...}>Label</Link></Button>`
+- Never wrap `<button>` inside `<Link>` without `asChild` (invalid nesting)
 - Non-GET actions: Inertia `<Link method>`, `router.post`, or `useForm` — not plain `<a>` tags
 - Route URLs: import from `@/actions/` or `@/routes/` (Wayfinder)
 
-## Defer to the shadcn-vue skill
+## Overlays
 
-This file covers **project choice of library**. For **correct usage** of that library, always follow the upstream **`shadcn-vue` skill** (`.agents/skills/shadcn-vue/`):
+- Desktop modal: shadcn `Dialog`
+- Mobile sheet: shadcn `Drawer` (Vaul) via `MobileBottomSheet` (`size`: `null` | `large` | `full`)
+- Adaptive: `AdaptiveOverlay` = Dialog on `md+`, Vaul on mobile (`useBreakpoint`)
 
-- Forms: `FieldGroup`, `Field`, validation states
-- Overlays: `DialogTitle`, no manual z-index
-- Spacing: `gap-*` not `space-y-*`, `size-*` not `w-* h-*`
-- Icons in Button: `data-icon` conventions
-- CLI: add, search, preset → `SKILL.md` workflow section
+## Toasts
+
+Use `toast` from `sonner`. Do not add a second toast library.
+
+## CLI
+
+```bash
+pnpm dlx shadcn@latest add dialog tabs input
+```
+
+Config: `components.json` (New York style, Neutral, CSS variables, `resources/css/tailwind.css`). After adding a primitive, restyle it to match Agent Video tokens — do not ship stock shadcn chrome.

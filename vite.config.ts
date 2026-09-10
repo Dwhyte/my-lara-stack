@@ -1,20 +1,12 @@
 import inertia from '@inertiajs/vite';
 import { wayfinder } from '@laravel/vite-plugin-wayfinder';
 import tailwindcss from '@tailwindcss/vite';
-import vue from '@vitejs/plugin-vue';
+import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
-import AutoImport from 'unplugin-auto-import/vite';
-import vuetify from 'vite-plugin-vuetify';
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    optimizeDeps: {
-        exclude: ['vuetify'],
-    },
-    ssr: {
-        noExternal: ['vuetify', 'vuetify-inertia-link', '@iconify/vue'],
-    },
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./resources/js', import.meta.url)),
@@ -22,25 +14,13 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/js/app.ts'],
-            ssr: 'resources/js/ssr.ts',
+            input: ['resources/js/app.tsx'],
+            ssr: 'resources/js/ssr.tsx',
             refresh: true,
         }),
         inertia(),
-        AutoImport({
-            imports: ['vue'],
-            dts: 'resources/js/types/auto-imports.d.ts',
-            vueTemplate: true,
-            eslintrc: {
-                enabled: true,
-                filepath: './.eslintrc-auto-import.json',
-            },
-        }),
-        vue(),
+        react(),
         tailwindcss(),
-        vuetify({
-            autoImport: true,
-        }),
         wayfinder({
             formVariants: true,
         }),

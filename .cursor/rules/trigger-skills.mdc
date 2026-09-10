@@ -1,0 +1,14 @@
+---
+description: Load the matching project skill before writing frontend, Inertia, or motion code
+alwaysApply: true
+---
+
+## Skill triggers
+
+Before writing or changing code in these domains, load the matching skill — don't wait until you're stuck. Emil design/motion skills live in `.agents/skills/`.
+
+- **UI / styling / pages in `resources/js`** — `app-ui`. Also load **`emil-design-eng`** for visual craft.
+- **Motion / transitions** (bottom nav, tooltips, page transitions, Vaul sheets) — `animate` (and `review-animations` / `improve-animations` when refining).
+- **Inertia React** (`<Link>`, `<Form>`, `useForm`, `useHttp`, `router`, pages) — `inertia-react-development`.
+- **Wayfinder** (`@/actions`, `@/routes`) — `wayfinder-development`.
+- **Tailwind utilities / `@theme`** — `tailwindcss-development`.

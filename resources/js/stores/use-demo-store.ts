@@ -1,20 +1,11 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { create } from 'zustand';
 
-export const useDemoStore = defineStore('demo', () => {
-    const toastCount = ref(0);
+type DemoStore = {
+    toastCount: number;
+    incrementToastCount: () => void;
+};
 
-    const incrementToastCount = () => {
-        toastCount.value += 1;
-    };
-
-    const reset = () => {
-        toastCount.value = 0;
-    };
-
-    return {
-        toastCount,
-        incrementToastCount,
-        reset,
-    };
-});
+export const useDemoStore = create<DemoStore>((set) => ({
+    toastCount: 0,
+    incrementToastCount: () => set((state) => ({ toastCount: state.toastCount + 1 })),
+}));

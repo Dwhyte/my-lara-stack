@@ -125,7 +125,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Inertia creates fully client-side rendered SPAs without modern SPA complexity, leveraging existing server-side patterns.
 - Components live in `resources/js/pages` (unless specified in `vite.config.js`). Use `Inertia::render()` for server-side routing instead of Blade views.
 - ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
-- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
+- IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
 
 # Inertia v3
 
@@ -193,11 +193,20 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 - Run tests: `php artisan test --compact` or filter: `php artisan test --compact --filter=testName`.
 - Do NOT delete tests without approval.
 
-=== inertia-vue/core rules ===
+=== inertia-react/core rules ===
 
-# Inertia + Vue
+# Inertia + React
 
-Vue components must have a single root element.
-- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
+- Pages are React TSX in `resources/js/pages/*.tsx`.
+- Use `<Link>` and `<Form>` from `@inertiajs/react` for navigation and forms.
+- IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
+
+=== state management rules ===
+
+# State: Zustand vs Inertia props
+
+- Default to Inertia props for server-owned data (DB records, auth, server-computed flags). Read from `usePage().props`; mutate via `router`, `useForm`, or `<Form>` and let the Inertia response refresh props.
+- Use Zustand ONLY for client-only UI state (modal/drawer open, wizard step, sidebar collapse, counters, optimistic flags). Stores live in `resources/js/stores/` as `create` modules.
+- Do NOT copy Inertia props into a Zustand store, and do NOT persist server data client-side to skip a request.
 
 </laravel-boost-guidelines>

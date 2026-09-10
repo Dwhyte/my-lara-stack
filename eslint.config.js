@@ -2,12 +2,9 @@ import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import prettier from 'eslint-config-prettier/flat';
 import importPlugin from 'eslint-plugin-import';
-import pluginVue from 'eslint-plugin-vue';
+import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import vueParser from 'vue-eslint-parser';
-
-import autoImportGlobals from './.eslintrc-auto-import.json' with { type: 'json' };
 
 const controlStatements = [
     'if',
@@ -29,35 +26,23 @@ const paddingAroundControl = [
 export default tseslint.config(
     js.configs.recommended,
     ...tseslint.configs.recommended,
-    ...pluginVue.configs['flat/recommended'],
     {
-        files: ['resources/js/**/*.{ts,vue}'],
+        files: ['resources/js/**/*.{ts,tsx}'],
         languageOptions: {
             globals: {
                 ...globals.browser,
-                ...Object.fromEntries(
-                    Object.entries(autoImportGlobals.globals).map(([name, enabled]) => [
-                        name,
-                        enabled ? 'readonly' : 'off',
-                    ]),
-                ),
             },
-        },
-    },
-    {
-        files: ['**/*.vue'],
-        languageOptions: {
-            parser: vueParser,
             parserOptions: {
-                parser: tseslint.parser,
-                extraFileExtensions: ['.vue'],
-                sourceType: 'module',
+                ecmaFeatures: {
+                    jsx: true,
+                },
             },
         },
     },
     {
         plugins: {
             import: importPlugin,
+            'react-hooks': reactHooks,
         },
         settings: {
             'import/resolver': {
@@ -69,6 +54,7 @@ export default tseslint.config(
             },
         },
         rules: {
+            ...reactHooks.configs.recommended.rules,
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/consistent-type-imports': [
                 'error',
@@ -87,11 +73,7 @@ export default tseslint.config(
                     },
                 },
             ],
-            'import/consistent-type-specifier-style': [
-                'error',
-                'prefer-top-level',
-            ],
-            'vue/multi-word-component-names': 'off',
+            'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
         },
     },
     {
@@ -100,10 +82,7 @@ export default tseslint.config(
         },
         rules: {
             '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: false }],
-            '@stylistic/padding-line-between-statements': [
-                'error',
-                ...paddingAroundControl,
-            ],
+            '@stylistic/padding-line-between-statements': ['error', ...paddingAroundControl],
         },
     },
     {

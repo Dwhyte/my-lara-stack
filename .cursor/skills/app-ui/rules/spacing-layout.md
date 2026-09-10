@@ -1,20 +1,18 @@
 # Spacing & layout
 
-Consistent spacing makes new pages feel like part of the same app. Match `DemoA.vue` / `DemoB.vue` unless a sibling component establishes a different local pattern.
+Consistent spacing makes new pages feel like part of the same app. Match `DemoA.tsx` / `DemoB.tsx` unless a sibling component establishes a different local pattern.
 
 ## Page shell
 
 Centered demo/marketing-style pages:
 
-```vue
-<div class="flex min-h-screen items-center justify-center bg-background p-8">
-  <div class="flex w-full max-w-2xl flex-col gap-8">
-    <!-- header block, card, footer note -->
-  </div>
+```tsx
+<div className="flex min-h-full items-center justify-center p-4 md:p-8">
+    <div className="flex w-full max-w-2xl flex-col gap-8">{/* header, card, footer note */}</div>
 </div>
 ```
 
-App-style pages (future dashboards, settings): drop `items-center justify-center`, use `min-h-screen bg-background` with a sidebar or top nav from shadcn `Sidebar` / header patterns.
+App-style pages (settings, dashboards): drop `items-center justify-center` and use `app-page-shell` / `max-w-lg` as in `settings/Appearance.tsx`.
 
 ## Width scale
 
@@ -28,22 +26,22 @@ App-style pages (future dashboards, settings): drop `items-center justify-center
 
 | Context | Classes |
 | --- | --- |
-| Page outer padding | `p-8` (reduce to `p-4` on small screens with `p-4 md:p-8`) |
+| Page outer padding | `p-4 md:p-8` |
 | Section vertical rhythm | `flex flex-col gap-8` between major blocks |
-| Card internal sections | `CardHeader` / `CardContent` / `CardFooter` (component handles padding) |
+| Card internal sections | `CardHeader` / `CardContent` / `CardFooter` |
 | Inline clusters | `flex items-center gap-2` or `gap-3` |
 | List rows | `flex flex-col gap-3` or `gap-2` |
 | Footer action stacks | `flex flex-col gap-2` inside `CardFooter` |
 
-## Spacing rules (align with shadcn skill)
+## Spacing rules
 
 - Use **`flex` + `gap-*`** for vertical and horizontal stacks — not `space-y-*` or `space-x-*`
 - Use **`size-*`** when width and height are equal (icons, avatars)
-- Use **`cn()`** from `@/lib/utils` for conditional layout classes
+- Use **`cn()`** from `@/lib/utils` for conditional layout classes (CLI-generated UI may import `cn` from the `cn` package)
 
 ## Cards and surfaces
 
-- Default content card: `<Card>` with full header/content/footer composition
+- Default content card: `<Card className="surface-raised">` with full header/content/footer composition
 - Primary action in a card: one full-width `Button` with `size="lg"` in `CardFooter`
 - Secondary / navigation action: `variant="secondary"` or `variant="outline"` on the next row
 - Subtle inline badge/chip: `rounded-lg bg-muted px-4 py-1.5 text-sm` (see Demo A header pill)
@@ -54,10 +52,10 @@ Extract shared surface wrappers to `resources/js/components/` only when the same
 
 - Mobile-first: start single column, add `md:` / `lg:` for grid and sidebar breakpoints
 - Prefer CSS grid/flex with `gap-*` over margin hacks between siblings
-- For complex app shells, add shadcn `Sidebar` via CLI when needed — don't hand-roll drawer behavior
+- App chrome: `AppSidebarDrawer` + `AppBottomNav` + `AppDesktopHeader` — do not hand-roll a second shell
 
 ## Loading and empty states
 
-- Deferred Inertia props: show `Skeleton` components — not blank areas
-- No data: use shadcn `Empty` when installed; until then, muted centered copy with `text-muted-foreground`
-- Inline async: `Spinner` inside `Button` with `disabled` (see shadcn skill `rules/composition.md`)
+- Deferred Inertia props: show pulsing skeletons — not blank areas
+- No data: muted centered copy with `text-muted-foreground`
+- Inline async: disable the `Button` while `processing`

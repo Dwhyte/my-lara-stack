@@ -1,13 +1,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Manrope', -apple-system, system-ui, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 
   --radius-sm: 6px;
   --radius-md: 8px;
-  --radius-lg: 10px;
+  --radius-lg: 8px;
   --radius-xl: 12px;
   --radius-2xl: 16px;
 
@@ -71,6 +71,9 @@
 
   --color-info: var(--info);
   --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-shell-ink: var(--shell-ink);
+  --color-chrome-header: var(--chrome-header);
   --color-accent-brand: var(--accent-brand);
   --color-seo: var(--seo);
   --color-aeo: var(--aeo);
@@ -126,7 +129,10 @@
 
   --shadow-raised: 0 2px 8px rgb(26 26 34 / 0.05);
   --shadow-overlay: 0 12px 32px rgb(26 26 34 / 0.12);
-  --shadow-brand: 0 2px 8px rgb(91 80 232 / 0.28);
+  --shadow-brand: 0 2px 8px rgb(33 66 231 / 0.28);
+  --shadow-card-hover:
+    0 0 0 2px var(--primary),
+    0 0 0 7px color-mix(in oklab, var(--primary) 22%, transparent);
 
   --color-scan-bg: #08090a;
   --color-scan-fg: #f7f8f8;
@@ -141,10 +147,9 @@
 }
 
 @layer base {
-  :root,
-  .v-theme--light {
+  :root {
     --line: var(--border);
-    --line-soft: #ededf1;
+    --line-soft: #e5e7eb;
     --line-mute: #f7f7f9;
     --elevation-canvas: var(--background);
     --elevation-raised: var(--card);
@@ -152,13 +157,17 @@
     --shadow-chrome-header: 0 1px 0 rgb(26 26 34 / 0.06), 0 2px 8px rgb(26 26 34 / 0.04);
     --shadow-chrome-sidebar: 1px 0 0 rgb(26 26 34 / 0.06), 2px 0 8px rgb(26 26 34 / 0.04);
     --shadow-chrome-panel-end: -1px 0 0 rgb(26 26 34 / 0.06), -2px 0 8px rgb(26 26 34 / 0.04);
-    --app-radius: 10px;
+    --canvas-dot: rgb(26 26 34 / 0.07);
+    --canvas-grid: 8px;
+    --app-radius: 8px;
     --app-radius-sm: 8px;
-    --app-text-body: 0.875rem;
+    --app-text-ui: 0.8125rem;
+    --app-text-meta: 0.75rem;
+    --app-text-label: 0.6875rem;
+    --app-text-body: var(--app-text-ui);
   }
 
-  .dark,
-  .v-theme--dark {
+  .dark {
     --line: var(--border);
     --line-soft: rgb(255 255 255 / 0.08);
     --line-mute: rgb(255 255 255 / 0.04);
@@ -167,17 +176,19 @@
     --elevation-raised-border: var(--line-soft);
     --shadow-raised: none;
     --shadow-overlay: 0 12px 32px rgb(0 0 0 / 0.35);
-    --shadow-brand: 0 2px 8px rgb(91 80 232 / 0.35);
+    --shadow-brand: 0 2px 8px rgb(33 66 231 / 0.35);
     --shadow-chrome-header: 0 1px 0 rgb(255 255 255 / 0.05), 0 2px 10px rgb(0 0 0 / 0.06);
     --shadow-chrome-sidebar: 1px 0 0 rgb(255 255 255 / 0.05), 2px 0 10px rgb(0 0 0 / 0.05);
     --shadow-chrome-panel-end: -1px 0 0 rgb(255 255 255 / 0.05), -2px 0 10px rgb(0 0 0 / 0.05);
+    --canvas-dot: rgb(255 255 255 / 0.1);
+    --canvas-grid: 8px;
   }
 
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background font-sans text-sm text-foreground;
+    @apply bg-background font-sans text-foreground;
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
@@ -241,8 +252,14 @@
   }
 
   .surface-chrome-sidebar {
-    background-color: var(--elevation-raised);
+    background-color: var(--sidebar);
     box-shadow: var(--shadow-chrome-sidebar);
+  }
+
+  .app-sidenav {
+    background-color: #ffffff;
+    border-inline-end: 1px solid var(--border);
+    box-shadow: none;
   }
 
   .surface-chrome-panel-end {

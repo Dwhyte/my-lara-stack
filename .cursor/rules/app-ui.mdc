@@ -1,6 +1,6 @@
 ---
-description: Non-negotiables for building app UI — Vuetify-first, design tokens, no hardcoded colors
-globs: "resources/js/**/*.{vue,ts}"
+description: Non-negotiables for building app UI — shadcn-first, design tokens, no hardcoded colors
+globs: "resources/js/**/*.{tsx,ts}"
 alwaysApply: true
 ---
 
@@ -8,24 +8,27 @@ alwaysApply: true
 
 These are the always-on rules. For the full how-to (spacing scale, typography, icons), the **`app-ui` skill** carries the detail — activate it whenever you build or restyle UI.
 
-## Vuetify-first
+## shadcn-first
 
-- Always reach for a Vuetify component (`v-btn`, `v-card`, `v-dialog`, `v-text-field`, etc.) before hand-rolling markup.
-- Use `vuetify-inertia-link` / `to` props for in-app navigation inside Vuetify components.
-- Compose with Vouch surface classes (`surface-raised`, `surface-chrome-*`) and token utilities.
-- Build bespoke markup only when no Vuetify primitive fits.
+- Always reach for a shadcn primitive (`Button`, `Card`, `Dialog`, `Input`, `Field`, etc.) before hand-rolling markup.
+- Use `Button asChild` + Inertia `<Link>` for in-app navigation inside buttons.
+- Compose with surface classes (`surface-raised`, `surface-chrome-*`) and token utilities.
+- Build bespoke markup only when no shadcn primitive fits.
 
 ## Design tokens, never raw color
 
 - Never hardcode hex/rgb/oklch in components. Use semantic tokens: `bg-primary`, `text-muted-foreground`, `border-border`, `bg-muted`, `text-destructive`, etc.
 - The token registry is `resources/css/tokens/` (`shadcn-vars.css`, `tokens.css`). Brand intent lives in `.ai/design/brand.md`.
-- Vuetify theme colors bridge from CSS vars via `resources/js/theme/tokens.ts`.
 
 ## Reuse before creating
 
 - Check `resources/js/pages`, `resources/js/components`, and sibling feature files for an existing pattern before writing a new one.
-- Use full shell/layout composition — see **`DemoA.vue`** / **`DemoB.vue`** and `layouts/app.vue`.
+- Use full shell/layout composition — see **`DemoA.tsx`** / **`DemoB.tsx`** and `layouts/app.tsx`.
 
 ## Icons
 
-- Use Iconify with Lucide collection: `<v-icon icon="lucide:..." />` or `IconifyIcon`.
+- Use Iconify with Lucide collection: `<IconifyIcon name="lucide:..." />`.
+
+## Motion
+
+- Load **`emil-design-eng`** for UI craft. Load **`animate`** when building transitions (bottom nav, tooltips, page transitions, Vaul sheets).

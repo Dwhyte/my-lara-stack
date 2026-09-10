@@ -1,18 +1,18 @@
-import { ref } from 'vue';
+import { useState } from 'react';
 
 export function useSendMagicLink() {
-    const isPending = ref(false);
+    const [isPending, setIsPending] = useState(false);
 
     async function send(email: string, name?: string): Promise<void> {
         void email;
         void name;
-        isPending.value = true;
+        setIsPending(true);
 
         await new Promise((resolve) => {
             setTimeout(resolve, 300);
         });
 
-        isPending.value = false;
+        setIsPending(false);
     }
 
     return {
@@ -22,16 +22,16 @@ export function useSendMagicLink() {
 }
 
 export function useInitiateGoogleOAuth() {
-    const isPending = ref(false);
+    const [isPending, setIsPending] = useState(false);
 
     async function open(): Promise<void> {
-        isPending.value = true;
+        setIsPending(true);
 
         await new Promise((resolve) => {
             setTimeout(resolve, 300);
         });
 
-        isPending.value = false;
+        setIsPending(false);
     }
 
     return {

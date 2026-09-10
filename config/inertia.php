@@ -17,9 +17,7 @@ return [
 
     'ssr' => [
         /*
-         * Disabled by default: Vuetify (and other UI libs) import .css from node_modules.
-         * Node cannot load those without a Vite SSR build. Enable only after adding
-         * resources/js/ssr.ts, laravel-vite-plugin `ssr` input, and `vite build --ssr`.
+         * Disabled by default. Enable after `vite build --ssr` if you need SSR HTML.
          */
         'enabled' => env('INERTIA_SSR_ENABLED', false),
         'url' => env('INERTIA_SSR_URL', 'http://127.0.0.1:13714'),
@@ -47,10 +45,8 @@ return [
         'extensions' => [
             'js',
             'jsx',
-            'svelte',
             'ts',
             'tsx',
-            'vue',
         ],
 
     ],

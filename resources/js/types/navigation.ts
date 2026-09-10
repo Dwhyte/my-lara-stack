@@ -1,13 +1,11 @@
-import type { InertiaLinkProps } from '@inertiajs/vue3';
-
 export type BreadcrumbItem = {
     title: string;
-    href: NonNullable<InertiaLinkProps['href']>;
+    href: string;
 };
 
 export type NavItem = {
     title: string;
-    href: NonNullable<InertiaLinkProps['href']>;
+    href: string;
     icon?: string;
     isActive?: boolean;
 };

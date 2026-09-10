@@ -1,35 +1,24 @@
 # Icons
 
-## Page and feature components → `@lucide/vue`
+## Page and feature components → `@iconify/react`
 
-Demos and app pages import icons directly:
+Use the shared `IconifyIcon` wrapper so string names (`lucide:*`, later `hugeicons:*`) survive:
 
-```vue
-<script setup lang="ts">
-import { ArrowRight, Bell, Layers } from '@lucide/vue';
-</script>
+```tsx
+import IconifyIcon from '@/components/IconifyIcon';
 
-<template>
-  <Layers class="size-5" />
-  <Bell class="size-4" />
-</template>
+<IconifyIcon name="lucide:bell" className="size-5" />
 ```
 
 Use `size-*` for square icons in page-level markup. Icons inherit current text color by default.
 
-## Icons inside shadcn-vue UI components
+## Icons inside shadcn UI components
 
-When placing icons **inside** `Button`, `InputGroup`, or other shadcn-vue primitives, follow the **`shadcn-vue` skill** icon rules (e.g. `data-icon="inline-start"` on icons in `Button`).
-
-If a page-level icon sits **outside** a shadcn-vue primitive (e.g. next to a `CardTitle`), explicit `size-*` is fine.
-
-## `components.json` icon library
-
-CLI-added shadcn-vue components use **`lucide`** per `components.json` `iconLibrary` (`@lucide/vue`).
+When placing icons **inside** `Button` or other shadcn primitives, keep them as children and let the button’s gap handle spacing. Generated Lucide React icons from the CLI are fine inside `components/ui` (e.g. Sonner). App pages should still prefer `IconifyIcon` string names.
 
 ## Accessibility
 
-- Icon-only buttons: always set `aria-label` on the `Button`
+- Icon-only buttons: always set `aria-label` on the control
 - Decorative icons adjacent to visible text: no extra label needed
 - Meaningful standalone icons: provide visible text or `aria-label` on the interactive parent
 
@@ -37,3 +26,4 @@ CLI-added shadcn-vue components use **`lucide`** per `components.json` `iconLibr
 
 - Mix icon libraries in the same button without reason
 - Wrap icons in unnecessary `<span>` wrappers for spacing — use `gap-*` on the flex parent
+- Use `<v-icon>` or Vue Iconify — this kit is React

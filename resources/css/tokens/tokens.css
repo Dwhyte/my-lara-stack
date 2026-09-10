@@ -11,6 +11,10 @@
   --radius-xl: 12px;
   --radius-2xl: 16px;
 
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--card);
@@ -154,6 +158,9 @@
     --elevation-canvas: var(--background);
     --elevation-raised: var(--card);
     --elevation-raised-border: var(--line-soft);
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
     --shadow-chrome-header: 0 1px 0 rgb(26 26 34 / 0.06), 0 2px 8px rgb(26 26 34 / 0.04);
     --shadow-chrome-sidebar: 1px 0 0 rgb(26 26 34 / 0.06), 2px 0 8px rgb(26 26 34 / 0.04);
     --shadow-chrome-panel-end: -1px 0 0 rgb(26 26 34 / 0.06), -2px 0 8px rgb(26 26 34 / 0.04);

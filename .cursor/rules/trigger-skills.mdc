@@ -8,7 +8,7 @@ alwaysApply: true
 Before writing or changing code in these domains, load the matching skill — don't wait until you're stuck. Emil design/motion skills live in `.agents/skills/`.
 
 - **UI / styling / pages in `resources/js`** — `app-ui`. Also load **`emil-design-eng`** for visual craft.
-- **Motion / transitions** (bottom nav, tooltips, page transitions, Vaul sheets) — `animate` (and `review-animations` / `improve-animations` when refining).
+- **Motion / transitions** (dialogs, modals, bottom nav, tooltips, page transitions, Vaul sheets) — load **`animate`** and its `RECIPES.md` *before* writing motion. Use `review-animations` / `improve-animations` when refining. Do not restyle overlay motion with `animate-in` / `zoom-in-*` or split Tailwind `translate` + `scale` utilities.
 - **Inertia React** (`<Link>`, `<Form>`, `useForm`, `useHttp`, `router`, pages) — `inertia-react-development`.
 - **Wayfinder** (`@/actions`, `@/routes`) — `wayfinder-development`.
 - **Tailwind utilities / `@theme`** — `tailwindcss-development`.

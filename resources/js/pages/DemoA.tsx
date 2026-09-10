@@ -5,6 +5,16 @@ import AppActionButton from '@/components/AppActionButton';
 import IconifyIcon from '@/components/IconifyIcon';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useDemoStore } from '@/stores/use-demo-store';
@@ -78,6 +88,41 @@ export default function DemoA() {
                         </ul>
                     </CardContent>
                     <CardFooter className="flex-col gap-2">
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" size="lg" className="w-full">
+                                    <IconifyIcon name="lucide:panel-top" className="size-[18px]" />
+                                    How this page loads
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Request to render</DialogTitle>
+                                    <DialogDescription>
+                                        A single round trip from Laravel to React — no full page reload after the first visit.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <ol className="text-muted-foreground flex list-none flex-col gap-3 text-sm">
+                                    {[
+                                        'Laravel routes the URL and returns an Inertia response with page props.',
+                                        'React mounts the matching page component inside the app shell.',
+                                        'Subsequent navigation swaps page components client-side via Inertia.',
+                                    ].map((step, index) => (
+                                        <li key={step} className="flex items-start gap-3">
+                                            <span className="bg-primary/10 text-primary flex size-6 shrink-0 items-center justify-center rounded-lg text-xs font-semibold">
+                                                {index + 1}
+                                            </span>
+                                            <span>{step}</span>
+                                        </li>
+                                    ))}
+                                </ol>
+                                <DialogFooter>
+                                    <DialogClose asChild>
+                                        <Button variant="outline">Got it</Button>
+                                    </DialogClose>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
                         <Button variant="outline" size="lg" className="w-full" onClick={showToast}>
                             <IconifyIcon name="lucide:bell" className="size-[18px]" />
                             Show a snackbar

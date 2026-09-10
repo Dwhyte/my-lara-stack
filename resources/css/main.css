@@ -185,4 +185,57 @@
   .h-13 {
     height: 3.25rem;
   }
+
+  .dialog-overlay {
+    opacity: 1;
+    transition: opacity 250ms var(--ease-out);
+  }
+
+  .dialog-overlay[data-state='closed'] {
+    opacity: 0;
+    transition-duration: 200ms;
+  }
+
+  @starting-style {
+    .dialog-overlay {
+      opacity: 0;
+    }
+  }
+
+  .dialog-content {
+    top: 50%;
+    left: 50%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    transform-origin: center;
+    will-change: transform;
+    transition:
+      opacity 250ms var(--ease-out),
+      transform 250ms var(--ease-out);
+  }
+
+  .dialog-content[data-state='closed'] {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+    transition-duration: 200ms;
+  }
+
+  @starting-style {
+    .dialog-content {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dialog-overlay,
+    .dialog-content {
+      transition: opacity 200ms ease;
+    }
+
+    .dialog-content,
+    .dialog-content[data-state='closed'] {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
 }

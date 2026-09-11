@@ -41,6 +41,11 @@ return [
                 'scheme' => env('REVERB_SCHEME', 'https'),
                 'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
             ],
+            'client' => [
+                'host' => env('VITE_REVERB_HOST', env('REVERB_HOST')),
+                'port' => (int) env('VITE_REVERB_PORT', env('REVERB_PORT', 8080)),
+                'scheme' => env('VITE_REVERB_SCHEME', env('REVERB_SCHEME', 'https')),
+            ],
             'client_options' => [
                 // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
             ],

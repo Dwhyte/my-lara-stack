@@ -77,16 +77,18 @@ When you add new AI-specific config, prefer **documenting the workflow** in `AGE
 composer dev
 ```
 
-This starts four tabbed processes — no `server` tab:
+This starts Pail (logs) and `pnpm dev`, which runs Vite, Reverb, and the queue listener in parallel:
 
 | Process | Command |
 | -------- | -------- |
-| queue | `php artisan queue:listen --tries=1` |
 | logs | `php artisan pail` |
-| vite | `pnpm run dev` |
-| reverb | `php artisan reverb:start --debug` |
+| vite | `vite` |
+| reverb | `scripts/reverb-dev.sh` |
+| queue | `scripts/queue-dev.sh` |
 
-List registered processes: `php artisan dev:list`.
+For Herd-managed Reverb only (no embedded Reverb start): `pnpm run dev:herd`.
+
+Stop **Herd → Services → Reverb** when using `pnpm dev` so port 8080 is free for the app's TLS Reverb server.
 
 Fresh setup in one command:
 
@@ -186,7 +188,9 @@ After changing routes or controller method signatures, run `php artisan wayfinde
 
 | Command | Purpose |
 | -------- | -------- |
-| `pnpm dev` | Vite dev server |
+| `pnpm dev` | Vite + Reverb + queue |
+| `pnpm run dev:herd` | Vite + queue (Herd runs Reverb) |
+| `pnpm run dev:vite` | Vite only |
 | `pnpm build` | Production frontend build |
 | `pnpm run lint` / `pnpm run format` | ESLint / Prettier (with fix) |
 | `pnpm run lint:check` / `pnpm run format:check` | CI-style lint/format checks |
@@ -195,7 +199,7 @@ After changing routes or controller method signatures, run `php artisan wayfinde
 | `composer run lint` | Laravel Pint (PHP style) |
 | `composer run ci:check` | Frontend checks + tests |
 | `composer run setup` | Install deps, migrate, build assets |
-| `composer dev` | Queue, Pail, Vite, Reverb (Herd serves HTTP) |
+| `composer dev` | Pail + `pnpm dev` (Vite, Reverb, queue; Herd serves HTTP) |
 | `php artisan boost:update` | Refresh Boost / AI guidance data (also runs on `composer update`) |
 | `pnpm dlx shadcn@latest add <name>` | Add shadcn/ui components |
 

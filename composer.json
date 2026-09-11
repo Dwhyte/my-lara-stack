@@ -54,7 +54,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "php artisan dev"
+            "npx concurrently -c \"#fdba74,#94a3b8\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=logs,dev --kill-others"
         ],
         "lint": [
             "pint --parallel"

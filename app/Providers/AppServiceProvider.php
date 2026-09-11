@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
-use Illuminate\Foundation\DevCommands;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -23,7 +22,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
-        $this->configureDevCommands();
         $this->configureHead();
     }
 
@@ -44,19 +42,6 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
-    }
-
-    protected function configureDevCommands(): void
-    {
-        if (! $this->app->environment('local')) {
-            return;
-        }
-
-        DevCommands::except('server');
-        DevCommands::tabs();
-        DevCommands::withTimestamps();
-
-        DevCommands::artisan('reverb:start --debug', 'reverb')->purple();
     }
 
     protected function configureHead(): void

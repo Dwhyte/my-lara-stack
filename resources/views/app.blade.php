@@ -14,10 +14,11 @@
         </script>
 
         @head
-        @viteReactRefresh
-        @vite(['resources/js/app.tsx'])
+        @vite(['resources/js/app.ts'])
     </head>
     <body class="font-sans antialiased">
-        @inertia
+        <div class="isolate">
+            @inertia
+        </div>
     </body>
 </html>

@@ -1,10 +1,10 @@
 import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import prettier from 'eslint-config-prettier/flat';
-import importPlugin from 'eslint-plugin-import';
-import reactHooks from 'eslint-plugin-react-hooks';
+import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import vueTs from '@vue/eslint-config-typescript';
 
 const controlStatements = [
     'if',
@@ -26,35 +26,21 @@ const paddingAroundControl = [
 export default tseslint.config(
     js.configs.recommended,
     ...tseslint.configs.recommended,
+    ...pluginVue.configs['flat/recommended'],
+    ...vueTs(),
     {
-        files: ['resources/js/**/*.{ts,tsx}'],
+        files: ['resources/js/**/*.{ts,vue}'],
         languageOptions: {
             globals: {
                 ...globals.browser,
-            },
-            parserOptions: {
-                ecmaFeatures: {
-                    jsx: true,
-                },
             },
         },
     },
     {
         plugins: {
-            import: importPlugin,
-            'react-hooks': reactHooks,
-        },
-        settings: {
-            'import/resolver': {
-                typescript: {
-                    alwaysTryTypes: true,
-                    project: './tsconfig.json',
-                },
-                node: true,
-            },
+            '@stylistic': stylistic,
         },
         rules: {
-            ...reactHooks.configs.recommended.rules,
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/consistent-type-imports': [
                 'error',
@@ -63,24 +49,6 @@ export default tseslint.config(
                     fixStyle: 'separate-type-imports',
                 },
             ],
-            'import/order': [
-                'error',
-                {
-                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-                    alphabetize: {
-                        order: 'asc',
-                        caseInsensitive: true,
-                    },
-                },
-            ],
-            'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
-        },
-    },
-    {
-        plugins: {
-            '@stylistic': stylistic,
-        },
-        rules: {
             '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: false }],
             '@stylistic/padding-line-between-statements': ['error', ...paddingAroundControl],
         },
@@ -95,6 +63,8 @@ export default tseslint.config(
             'resources/js/actions/**',
             'resources/js/routes/**',
             'resources/js/wayfinder/**',
+            'auto-imports.d.ts',
+            'components.d.ts',
         ],
     },
     prettier,

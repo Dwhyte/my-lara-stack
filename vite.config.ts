@@ -1,9 +1,9 @@
 import inertia from '@inertiajs/vite';
 import { wayfinder } from '@laravel/vite-plugin-wayfinder';
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
+import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import { fileURLToPath, URL } from 'node:url';
+import ui from '@nuxt/ui/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -14,13 +14,21 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/js/app.tsx'],
-            ssr: 'resources/js/ssr.tsx',
+            input: ['resources/js/app.ts'],
             refresh: true,
         }),
         inertia(),
-        react(),
-        tailwindcss(),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
+        ui({
+            router: 'inertia',
+        }),
         wayfinder({
             formVariants: true,
         }),

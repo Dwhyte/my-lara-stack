@@ -76,30 +76,32 @@ function resolveSocketHost(host: string): string {
     return window.location.hostname;
 }
 
-const reverb = resolveReverbConfig();
-const wsHost = resolveSocketHost(reverb.host);
-const forceTLS = reverb.scheme === 'https' && !isLoopbackHost(wsHost);
-
-window.Pusher = Pusher;
-
 let echo: Echo<'reverb'> | undefined;
 
-if (reverb.key) {
-    echo = new Echo({
-        broadcaster: 'reverb',
-        key: reverb.key,
-        wsHost,
-        wsPort: reverb.port,
-        wssPort: reverb.port,
-        forceTLS,
-        enabledTransports: ['ws', 'wss'],
-        authEndpoint: '/broadcasting/auth',
-        auth: {
-            headers: broadcastAuthHeaders(),
-        },
-    });
+if (typeof window !== 'undefined') {
+    const reverb = resolveReverbConfig();
+    const wsHost = resolveSocketHost(reverb.host);
+    const forceTLS = reverb.scheme === 'https' && !isLoopbackHost(wsHost);
 
-    window.Echo = echo;
+    window.Pusher = Pusher;
+
+    if (reverb.key) {
+        echo = new Echo({
+            broadcaster: 'reverb',
+            key: reverb.key,
+            wsHost,
+            wsPort: reverb.port,
+            wssPort: reverb.port,
+            forceTLS,
+            enabledTransports: ['ws', 'wss'],
+            authEndpoint: '/broadcasting/auth',
+            auth: {
+                headers: broadcastAuthHeaders(),
+            },
+        });
+
+        window.Echo = echo;
+    }
 }
 
 export { echo };
